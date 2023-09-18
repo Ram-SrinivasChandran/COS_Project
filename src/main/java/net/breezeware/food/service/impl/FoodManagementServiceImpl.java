@@ -6,7 +6,6 @@ import net.breezeware.food.service.api.FoodManagementService;
 public class FoodManagementServiceImpl implements FoodManagementService {
     FoodItemRepository foodItemRepository=new FoodItemRepository();
     public void addFoodItem(FoodItem foodItem){
-        System.out.println("Entering addFoodItem() " + foodItem);
         foodItemRepository.addFoodItem(foodItem);
     }
 }

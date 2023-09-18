@@ -14,7 +14,6 @@ public class FoodItemRepository {
             Connection connection = Main.getConnection();
             assert connection != null;
             Statement statement = connection.createStatement();
-            System.out.println(foodItem);
             statement.execute("INSERT INTO " + TABLE_NAME + " (id,name,cost,quantity) VALUES (" +
                     foodItem.getId() + " , " + "'" + foodItem.getName() + "'" + " , " + foodItem.getCost() + " , " + foodItem.getQuantity() + " )");
             statement.close();
