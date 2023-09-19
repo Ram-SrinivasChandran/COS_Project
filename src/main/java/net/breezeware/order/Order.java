@@ -1,6 +1,6 @@
 package net.breezeware.order;
 
-import net.breezeware.user.User;
+import net.breezeware.user.entity.User;
 
 import java.time.Instant;
 

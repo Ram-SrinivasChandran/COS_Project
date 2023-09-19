@@ -1,4 +1,4 @@
-package net.breezeware.user;
+package net.breezeware.user.entity;
 
 public class User {
     private int id;
@@ -6,6 +6,14 @@ public class User {
     private String userName;
     private String password;
     private String role;
+
+    public User(int id, String name, String userName, String password, String role) {
+        this.id = id;
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+    }
 
     public int getId() {
         return id;

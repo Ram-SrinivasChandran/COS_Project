@@ -1,6 +1,6 @@
 package net.breezeware.food.dao;
 
-import net.breezeware.Main;
+import net.breezeware.DataBaseConnection;
 import net.breezeware.food.entity.FoodItem;
 
 import java.sql.*;
@@ -12,7 +12,7 @@ public class FoodItemRepository {
     public int addFoodItem(FoodItem foodItem) {
         int recordsInserted=0;
         try {
-            connection = Main.getConnection();
+            connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement statement=connection.prepareStatement("INSERT INTO "+TABLE_NAME+" VALUES (?,?,?,?)");
             statement.setInt(1,foodItem.getId());
@@ -31,7 +31,7 @@ public class FoodItemRepository {
 
     public ResultSet viewFoodItem(Integer id) {
         try {
-            connection = Main.getConnection();
+            connection = DataBaseConnection.getConnection();
             assert connection != null;
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME + " WHERE id=" + id);
@@ -53,7 +53,7 @@ public class FoodItemRepository {
     public int updateFoodItem(FoodItem foodItem) {
         int recordsChanged=0;
         try {
-            connection = Main.getConnection();
+            connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement statement=connection.prepareStatement("UPDATE "+TABLE_NAME+" SET name=?,cost=?,quantity=? WHERE id="+foodItem.getId());
             statement.setString(1,foodItem.getName());
@@ -70,7 +70,7 @@ public class FoodItemRepository {
 
     public void deleteFoodItem(int id) {
         try {
-            connection = Main.getConnection();
+            connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement statement=connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id="+id);
             statement.execute();
