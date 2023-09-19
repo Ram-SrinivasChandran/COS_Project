@@ -9,7 +9,7 @@ public class Main {
             Connection connection=getConnection();
             assert connection != null;
             Statement statement=connection.createStatement();
-//            statement.execute("INSERT INTO user(id,name,user_name,password,role) VALUES (1,'RAM','ram_06','breeze123','ADMIN')");
+            statement.execute("INSERT INTO user(name,user_name,password,role) VALUES ('RAMKumar','ram_07','breeze123','ADMIN')");
             statement.close();
             connection.close();
         }catch(Exception e){
