@@ -41,9 +41,6 @@ public class FoodItemRepository {
             } else {
                 System.out.println("No Food Item is Available in this id : " + id);
             }
-            resultSet.close();
-            statement.close();
-            connection.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

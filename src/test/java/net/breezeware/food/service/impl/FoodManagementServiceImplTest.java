@@ -2,9 +2,7 @@ package net.breezeware.food.service.impl;
 
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.service.api.FoodManagementService;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +10,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FoodManagementServiceImplTest {
     FoodManagementService foodManagementService = new FoodManagementServiceImpl();
     @Test
@@ -25,6 +24,7 @@ class FoodManagementServiceImplTest {
     void viewFoodItem() throws SQLException {
         ResultSet expected = foodManagementService.viewFoodItem(1);
         assertEquals(expected.getString("name"),"idly");
+        expected.close();
     }
     @Test
     @Order(3)
