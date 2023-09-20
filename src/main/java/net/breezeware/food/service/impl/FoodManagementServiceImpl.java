@@ -1,4 +1,5 @@
 package net.breezeware.food.service.impl;
+
 import net.breezeware.food.dao.FoodItemRepository;
 import net.breezeware.food.dao.FoodMenuFoodItemRepository;
 import net.breezeware.food.dao.FoodMenuRepository;
@@ -11,67 +12,132 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Implementation of the FoodManagementService interface for managing food-related operations.
+ */
 public class FoodManagementServiceImpl implements FoodManagementService {
-    FoodItemRepository foodItemRepository=new FoodItemRepository();
-    FoodMenuFoodItemRepository foodMenuFoodItemRepository=new FoodMenuFoodItemRepository();
-    FoodMenuRepository foodMenuRepository =new FoodMenuRepository();
-    public int addFoodItem(FoodItem foodItem){
+    private final FoodItemRepository foodItemRepository = new FoodItemRepository();
+    private final FoodMenuFoodItemRepository foodMenuFoodItemRepository = new FoodMenuFoodItemRepository();
+    private final FoodMenuRepository foodMenuRepository = new FoodMenuRepository();
+
+    /**
+     * Add a new food item to the system.
+     *
+     * @param foodItem The food item object to be added.
+     * @return An integer indicating the result of the operation with the recordsChanged count.
+     */
+    public int addFoodItem(FoodItem foodItem) {
         return foodItemRepository.addFoodItem(foodItem);
     }
+
+    /**
+     * Retrieve the name of a food item by its ID.
+     *
+     * @param id The ID of the food item to retrieve.
+     * @return The name of the retrieved food item.
+     * @throws SQLException if there is an issue with database operations.
+     */
     public String retrieveFoodItem(int id) throws SQLException {
         ResultSet resultSet = foodItemRepository.retrieveFoodItem(id);
         String name = resultSet.getString("name");
         resultSet.close();
         return name;
     }
-    public void retrieveFoodItems(){
+
+    /**
+     * Retrieve a list of food items.
+     */
+    public void retrieveFoodItems() {
         foodItemRepository.retrieveFoodItems();
     }
-    public int updateFoodItem(FoodItem foodItem){
+
+    /**
+     * Update a food item's information.
+     *
+     * @param foodItem The updated food item object.
+     * @return An integer indicating the result of the operation (e.g., success or failure).
+     */
+    public int updateFoodItem(FoodItem foodItem) {
         System.out.println("The Food Name is Updated.");
         return foodItemRepository.updateFoodItem(foodItem);
     }
-    public void deleteFoodItem(int id){
-        System.out.println("The Food Item in the given id is Deleted.");
+
+    /**
+     * Delete a food item by its ID.
+     *
+     * @param id The ID of the food item to delete.
+     */
+    public void deleteFoodItem(int id) {
+        System.out.println("The Food Item with the given ID is Deleted.");
         foodItemRepository.deleteFoodItem(id);
     }
-    public String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems){
-        String foodMenuName=null;
+
+    /**
+     * Add a new food menu along with its associated food items.
+     *
+     * @param foodMenu  The food menu object to be added.
+     * @param foodItems The list of food items to be associated with the menu.
+     * @return The name of the added food menu.
+     */
+    public String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems) {
+        String foodMenuName = null;
         int foodMenuId = foodMenuRepository.addFoodMenu(foodMenu, foodItems);
-        if(foodMenuId!=0){
+        if (foodMenuId != 0) {
             System.out.println("Food Menu is Added.");
-            for (var foodItem:
-                    foodItems) {
+            for (var foodItem : foodItems) {
                 addFoodItem(foodItem);
             }
-            foodMenuName=addFoodMenuFoodItemMap(foodItems,foodMenuId);
+            foodMenuName = addFoodMenuFoodItemMap(foodItems, foodMenuId);
         }
         return foodMenuName;
     }
-    public String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId){
+
+    /**
+     * Add mappings between food items and a food menu.
+     *
+     * @param foodItems   The list of food items to be associated with the menu.
+     * @param foodMenuId  The ID of the food menu.
+     * @return The name of the added food menu.
+     */
+    public String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId) {
         return foodMenuFoodItemRepository.addFoodMenuFoodItemMap(foodItems, foodMenuId);
     }
-    public void retrieveFoodMenu(){
+
+    /**
+     * Retrieve a list of food menus.
+     */
+    public void retrieveFoodMenu() {
         foodMenuRepository.retrieveFoodMenu();
     }
-    public void updateFoodMenu(FoodMenuDto foodMenuDto){
-        if(foodMenuRepository.checkMenu(foodMenuDto.getFoodMenu())){
+
+    /**
+     * Update a food menu and its associated food items.
+     *
+     * @param foodMenuDto The DTO containing the updated food menu and food items.
+     */
+    public void updateFoodMenu(FoodMenuDto foodMenuDto) {
+        if (foodMenuRepository.checkMenu(foodMenuDto.getFoodMenu())) {
             List<FoodItem> foodItems = foodMenuDto.getFoodItems();
-            for (var foodItem:
-                    foodItems) {
-                    updateFoodItem(foodItem);
+            for (var foodItem : foodItems) {
+                updateFoodItem(foodItem);
             }
-        }else{
-            System.out.println("There is no Menu with the given Food Item Detail");
+        } else {
+            System.out.println("There is no menu with the given food item details.");
         }
     }
-    public boolean deleteFoodMenu(FoodMenu foodMenu){
-        if(foodMenuRepository.checkMenu(foodMenu)) {
+
+    /**
+     * Delete a food menu by its details.
+     *
+     * @param foodMenu The food menu object to delete.
+     * @return true if the food menu is deleted, false otherwise.
+     */
+    public boolean deleteFoodMenu(FoodMenu foodMenu) {
+        if (foodMenuRepository.checkMenu(foodMenu)) {
             System.out.println("The Food Menu Is Deleted.");
             return foodMenuRepository.deleteFoodMenu(foodMenu);
-        }
-        else{
-            System.out.println("There is no Menu with the given Food Item Detail");
+        } else {
+            System.out.println("There is no menu with the given food item details.");
             return false;
         }
     }

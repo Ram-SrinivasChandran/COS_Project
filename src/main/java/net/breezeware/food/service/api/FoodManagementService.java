@@ -7,15 +7,84 @@ import net.breezeware.food.entity.FoodMenu;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * An interface for managing food-related operations such as adding food items,
+ * retrieving food items, updating food items, and managing food menus.
+ */
 public interface FoodManagementService {
+
+    /**
+     * Add a new food item to the system.
+     *
+     * @param foodItem The food item object to be added.
+     * @return An integer indicating the result of the operation with the recordsChanged count.
+     */
     int addFoodItem(FoodItem foodItem);
+
+    /**
+     * Retrieve the name of a food item by its ID.
+     *
+     * @param id The ID of the food item to retrieve.
+     * @return The name of the retrieved food item.
+     * @throws SQLException if there is an issue with database operations.
+     */
     String retrieveFoodItem(int id) throws SQLException;
+
+    /**
+     * Retrieve a list of food items.
+     */
     void retrieveFoodItems();
+
+    /**
+     * Update a food item's information.
+     *
+     * @param foodItem The updated food item object.
+     * @return An integer indicating the result of the operation with the recordsChanged count.
+     */
     int updateFoodItem(FoodItem foodItem);
+
+    /**
+     * Delete a food item by its ID.
+     *
+     * @param id The ID of the food item to delete.
+     */
     void deleteFoodItem(int id);
+
+    /**
+     * Add a new food menu along with its associated food items.
+     *
+     * @param foodMenu  The food menu object to be added.
+     * @param foodItems The list of food items to be associated with the menu.
+     * @return The name of the added food menu.
+     */
     String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems);
-    String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId);
+
+    /**
+     * Add mappings between food items and a food menu.
+     *
+     * @param foodItems   The list of food items to be associated with the menu.
+     * @param foodMenuId  The ID of the food menu.
+     * @return The name of the added food menu.
+     */
+    String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId);
+
+    /**
+     * Retrieve a list of food menus.
+     */
     void retrieveFoodMenu();
+
+    /**
+     * Update a food menu and its associated food items.
+     *
+     * @param foodMenuDto The DTO containing the updated food menu and food items.
+     */
     void updateFoodMenu(FoodMenuDto foodMenuDto);
+
+    /**
+     * Delete a food menu by its details.
+     *
+     * @param foodMenu The food menu object to delete.
+     * @return true if the food menu is deleted, false otherwise.
+     */
     boolean deleteFoodMenu(FoodMenu foodMenu);
 }
