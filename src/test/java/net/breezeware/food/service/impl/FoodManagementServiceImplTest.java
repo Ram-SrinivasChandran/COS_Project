@@ -48,8 +48,13 @@ class FoodManagementServiceImplTest {
     List<FoodItem> foodItems=new ArrayList<>();
     foodItems.add(new FoodItem("Idly",10,20));
     foodItems.add(new FoodItem("Dosa",20,20));
-    foodItems.add(new FoodItem("Poori",25,30));
-    FoodMenu foodMenu=new FoodMenu("Breakfast","Veg","Monday");
-    assertEquals("Breakfast",foodManagementService.addFoodMenu(foodMenu,foodItems));
+    foodItems.add(new FoodItem("Parotta",25,30));
+    FoodMenu foodMenu=new FoodMenu("Dinner","Veg","Monday");
+    assertEquals("Dinner",foodManagementService.addFoodMenu(foodMenu,foodItems));
+    }
+    @Test
+    @Order(7)
+    void retrieveFoodMenu(){
+        foodManagementService.retrieveFoodMenu();
     }
 }

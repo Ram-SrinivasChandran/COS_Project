@@ -50,4 +50,7 @@ public class FoodManagementServiceImpl implements FoodManagementService {
     public String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId){
         return foodMenuFoodItemRepository.addFoodMenuFoodItemMap(foodItems, foodMenuId);
     }
+    public void retrieveFoodMenu(){
+        foodMenuRepository.retrieveFoodMenu();
+    }
 }

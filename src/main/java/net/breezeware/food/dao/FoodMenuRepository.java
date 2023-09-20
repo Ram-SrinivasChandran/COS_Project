@@ -1,6 +1,7 @@
 package net.breezeware.food.dao;
 
 import net.breezeware.DataBaseConnection;
+import net.breezeware.food.dto.FoodMenuDto;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
 
@@ -8,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodMenuRepository {
@@ -36,5 +38,64 @@ public class FoodMenuRepository {
             System.out.println(e.getMessage());
         }
         return foodMenuId;
+    }
+    public void retrieveFoodMenu(){
+        List<FoodMenu>foodMenus=new ArrayList<>();
+        List<FoodMenuDto>foodMenuDtoList=new ArrayList<>();
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection != null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+TABLE_NAME);
+            while(resultSet.next()){
+                FoodMenu foodMenu=new FoodMenu(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getString("type"),resultSet.getString("availabilityOn"));
+                foodMenus.add(foodMenu);
+            }
+            resultSet.close();
+            statement.close();
+            for (var foodMenu:
+                 foodMenus) {
+                List<Integer>foodItemIds=new ArrayList<>();
+                Statement statement1=connection.createStatement();
+                ResultSet resultSet1=statement1.executeQuery("SELECT * FROM food_menu_food_item_map WHERE food_menu_id="+foodMenu.getId());
+                while(resultSet1.next()){
+                    foodItemIds.add(resultSet1.getInt("food_item_id"));
+                }
+                statement1.close();
+                resultSet1.close();
+                List<FoodItem>foodItems=new ArrayList<>();
+                for (var foodItemId:
+                     foodItemIds) {
+                    Statement statement2=connection.createStatement();
+                    ResultSet resultSet2=statement2.executeQuery("SELECT * FROM food_item WHERE id="+foodItemId);
+                    if(resultSet2.next()){
+                        foodItems.add(new FoodItem(resultSet2.getInt("id"),resultSet2.getString("name"),resultSet2.getDouble("cost"),resultSet2.getInt("quantity")));
+                    }
+                    resultSet2.close();
+                    statement2.close();
+                }
+                foodMenuDtoList.add(new FoodMenuDto(foodMenu,foodItems));
+            }
+            connection.close();
+            for (var foodMenuDto:
+                 foodMenuDtoList) {
+                FoodMenu foodMenu=foodMenuDto.getFoodMenu();
+                System.out.println("Id : "+foodMenu.getId()+
+                        ", Name : "+foodMenu.getName()+
+                        ", Type : "+foodMenu.getType()+
+                        ", Available On : "+foodMenu.getAvailabilityOn());
+                List<FoodItem>foodItems=foodMenuDto.getFoodItems();
+                for (var foodItem:
+                     foodItems) {
+                    System.out.println("     Id : "+foodItem.getId()+
+                                    ", Name : "+foodItem.getName()+
+                                    ", Cost : "+foodItem.getCost()+
+                                    ", Quantity : "+foodItem.getQuantity());
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }
