@@ -22,23 +22,28 @@ class FoodManagementServiceImplTest {
     }
     @Test
     @Order(2)
-    void viewFoodItem() throws SQLException {
+    void retrieveFoodItem() throws SQLException {
         String actual = foodManagementService.retrieveFoodItem(1);
         assertEquals("Idly",actual);
     }
     @Test
     @Order(3)
+    void retrieveFoodItems(){
+        foodManagementService.retrieveFoodItems();
+    }
+    @Test
+    @Order(4)
     void updateFoodItem(){
         FoodItem foodItem = new FoodItem(1,"Dosa",20,5);
         assertEquals(1,foodManagementService.updateFoodItem(foodItem));
     }
     @Test
-    @Order(4)
+    @Order(5)
     void deleteFoodItem(){
         foodManagementService.deleteFoodItem(1);
     }
     @Test
-    @Order(5)
+    @Order(6)
     void addFoodMenu(){
     List<FoodItem> foodItems=new ArrayList<>();
     foodItems.add(new FoodItem("Idly",10,20));

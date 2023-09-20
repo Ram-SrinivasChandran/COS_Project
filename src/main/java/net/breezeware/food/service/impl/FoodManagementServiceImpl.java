@@ -18,10 +18,13 @@ public class FoodManagementServiceImpl implements FoodManagementService {
         return foodItemRepository.addFoodItem(foodItem);
     }
     public String retrieveFoodItem(int id) throws SQLException {
-        ResultSet resultSet = foodItemRepository.viewFoodItem(id);
+        ResultSet resultSet = foodItemRepository.retrieveFoodItem(id);
         String name = resultSet.getString("name");
         resultSet.close();
         return name;
+    }
+    public void retrieveFoodItems(){
+        foodItemRepository.retrieveFoodItems();
     }
     public int updateFoodItem(FoodItem foodItem){
         System.out.println("The Food Name is Updated.");

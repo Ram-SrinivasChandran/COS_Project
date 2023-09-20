@@ -28,7 +28,7 @@ public class FoodItemRepository {
         return recordsInserted;
     }
 
-    public ResultSet viewFoodItem(int id) {
+    public ResultSet retrieveFoodItem(int id) {
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
@@ -44,6 +44,25 @@ public class FoodItemRepository {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+    public void retrieveFoodItems(){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+TABLE_NAME);
+            while(resultSet.next()){
+                System.out.println("Id : "+resultSet.getInt("id")+", Name : "+resultSet.getString("name")+
+                        ", Cost : "+resultSet.getDouble("cost")+
+                        ", Total Quantity : "+resultSet.getInt("quantity"));
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public int updateFoodItem(FoodItem foodItem) {

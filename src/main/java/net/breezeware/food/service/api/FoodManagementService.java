@@ -9,6 +9,7 @@ import java.util.List;
 public interface FoodManagementService {
     int addFoodItem(FoodItem foodItem);
     String retrieveFoodItem(int id) throws SQLException;
+    void retrieveFoodItems();
     int updateFoodItem(FoodItem foodItem);
     void deleteFoodItem(int id);
     String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems);
