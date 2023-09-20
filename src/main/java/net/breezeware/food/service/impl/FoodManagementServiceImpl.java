@@ -75,7 +75,7 @@ public class FoodManagementServiceImpl implements FoodManagementService {
     /**
      * Add a new food menu along with its associated food items.
      *
-     * @param foodMenuDto  The food menu DTO contains the food menu object and list of foodItems to be added.
+     * @param foodMenuDto The food menu DTO contains the food menu object and list of foodItems to be added.
      * @return The name of the added food menu.
      */
     public String addFoodMenu(FoodMenuDto foodMenuDto) {
