@@ -23,7 +23,7 @@ public class FoodItemRepository {
             statement.close();
             connection.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Food Item is Already Exists");
         }
         return recordsInserted;
     }

@@ -2,6 +2,7 @@ package net.breezeware.food.service.impl;
 import net.breezeware.food.dao.FoodItemRepository;
 import net.breezeware.food.dao.FoodMenuFoodItemRepository;
 import net.breezeware.food.dao.FoodMenuRepository;
+import net.breezeware.food.dto.FoodMenuDto;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
 import net.breezeware.food.service.api.FoodManagementService;
@@ -52,5 +53,16 @@ public class FoodManagementServiceImpl implements FoodManagementService {
     }
     public void retrieveFoodMenu(){
         foodMenuRepository.retrieveFoodMenu();
+    }
+    public void updateFoodMenu(FoodMenuDto foodMenuDto){
+        if(foodMenuRepository.checkMenu(foodMenuDto.getFoodMenu())){
+            List<FoodItem> foodItems = foodMenuDto.getFoodItems();
+            for (var foodItem:
+                    foodItems) {
+                    updateFoodItem(foodItem);
+            }
+        }else{
+            System.out.println("There is no Menu with the given Food Item Detail");
+        }
     }
 }

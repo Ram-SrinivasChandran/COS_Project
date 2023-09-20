@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FoodMenuRepository {
@@ -96,6 +97,24 @@ public class FoodMenuRepository {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-
     }
+    public boolean checkMenu(FoodMenu foodMenu){
+        boolean isMenuAvailable=false;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+TABLE_NAME+" WHERE id="+foodMenu.getId());
+            if(resultSet.next()){
+                isMenuAvailable=true;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return isMenuAvailable;
+    }
+
 }

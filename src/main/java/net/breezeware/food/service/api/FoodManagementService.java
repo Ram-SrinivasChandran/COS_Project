@@ -1,5 +1,6 @@
 package net.breezeware.food.service.api;
 
+import net.breezeware.food.dto.FoodMenuDto;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
 
@@ -15,4 +16,5 @@ public interface FoodManagementService {
     String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems);
     String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId);
     void retrieveFoodMenu();
+    void updateFoodMenu(FoodMenuDto foodMenuDto);
 }
