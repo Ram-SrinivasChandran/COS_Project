@@ -16,8 +16,7 @@ public class FoodMenuRepository {
     Connection connection;
     public static final String TABLE_NAME="food_menu";
     public int addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems){
-        int recordsChanged=0;
-        FoodManagementService foodManagementService=new FoodManagementServiceImpl();
+        int foodMenuId=0;
         try{
             connection= DataBaseConnection.getConnection();
             assert connection!=null;
@@ -25,23 +24,19 @@ public class FoodMenuRepository {
             preparedStatement.setString(1,foodMenu.getName());
             preparedStatement.setString(2,foodMenu.getType());
             preparedStatement.setString(3, foodMenu.getAvailabilityOn());
-            recordsChanged=preparedStatement.executeUpdate();
+            preparedStatement.execute();
             Statement statement=connection.createStatement();
             ResultSet resultSet=statement.executeQuery("SELECT * FROM "+TABLE_NAME+" WHERE name= '"+foodMenu.getName()+"'");
-            int foodMenuId=0;
             if(resultSet.next()){
                 foodMenuId=resultSet.getInt("id");
             }
             resultSet.close();
             statement.close();
-            foodManagementService.addFoodMenuFoodItemMap(foodItems,foodMenuId);
-            for (var foodItem:
-                 foodItems) {
-                foodManagementService.addFoodItem(foodItem);
-            }
+            preparedStatement.close();
+            connection.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return recordsChanged;
+        return foodMenuId;
     }
 }

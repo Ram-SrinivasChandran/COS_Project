@@ -29,7 +29,7 @@ public class FoodItemRepository {
         return recordsInserted;
     }
 
-    public ResultSet viewFoodItem(Integer id) {
+    public ResultSet viewFoodItem(int id) {
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;

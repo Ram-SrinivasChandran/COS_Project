@@ -13,10 +13,11 @@ import java.util.List;
 public class FoodManagementServiceImpl implements FoodManagementService {
     FoodItemRepository foodItemRepository=new FoodItemRepository();
     FoodMenuFoodItemRepository foodMenuFoodItemRepository=new FoodMenuFoodItemRepository();
+    FoodMenuRepository foodMenuRepository =new FoodMenuRepository();
     public int addFoodItem(FoodItem foodItem){
         return foodItemRepository.addFoodItem(foodItem);
     }
-    public String viewFoodItem(Integer id) throws SQLException {
+    public String retrieveFoodItem(int id) throws SQLException {
         ResultSet resultSet = foodItemRepository.viewFoodItem(id);
         String name = resultSet.getString("name");
         resultSet.close();
@@ -30,12 +31,20 @@ public class FoodManagementServiceImpl implements FoodManagementService {
         System.out.println("The Food Item in the given id is Deleted.");
         foodItemRepository.deleteFoodItem(id);
     }
-    public int addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems){
-        FoodMenuRepository foodMenuRepository =new FoodMenuRepository();
-        System.out.println("Food Menu is Added.");
-        return  foodMenuRepository.addFoodMenu(foodMenu,foodItems);
+    public String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems){
+        String foodMenuName=null;
+        int foodMenuId = foodMenuRepository.addFoodMenu(foodMenu, foodItems);
+        if(foodMenuId!=0){
+            System.out.println("Food Menu is Added.");
+            foodMenuName=addFoodMenuFoodItemMap(foodItems,foodMenuId);
+            for (var foodItem:
+                    foodItems) {
+                addFoodItem(foodItem);
+            }
+        }
+        return foodMenuName;
     }
-    public void addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId){
-        foodMenuFoodItemRepository.addFoodMenuFoodItemMap(foodItems,foodMenuId);
+    public String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId){
+        return foodMenuFoodItemRepository.addFoodMenuFoodItemMap(foodItems, foodMenuId);
     }
 }
