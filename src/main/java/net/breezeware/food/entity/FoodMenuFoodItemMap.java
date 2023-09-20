@@ -5,6 +5,12 @@ public class FoodMenuFoodItemMap {
     private FoodMenu foodMenuId;
     private FoodItem foodItemId;
 
+    public FoodMenuFoodItemMap(int id, FoodMenu foodMenuId, FoodItem foodItemId) {
+        this.id = id;
+        this.foodMenuId = foodMenuId;
+        this.foodItemId = foodItemId;
+    }
+
     public int getId() {
         return id;
     }

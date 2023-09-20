@@ -22,9 +22,8 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(2)
     void viewFoodItem() throws SQLException {
-        ResultSet expected = foodManagementService.viewFoodItem(1);
-        assertEquals(expected.getString("name"),"idly");
-        expected.close();
+        String actual = foodManagementService.viewFoodItem(1);
+        assertEquals("idly",actual);
     }
     @Test
     @Order(3)
