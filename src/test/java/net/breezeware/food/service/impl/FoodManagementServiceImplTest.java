@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FoodManagementServiceImplTest {
@@ -79,5 +80,10 @@ class FoodManagementServiceImplTest {
         FoodMenu foodMenu=new FoodMenu(1,"Breakfast","Veg","Monday");
         FoodMenuDto foodMenuDto=new FoodMenuDto(foodMenu,foodItems);
         foodManagementService.updateFoodMenu(foodMenuDto);
+    }
+    @Test
+    @Order(9)
+    void deleteFoodMenu(){
+        assertTrue(foodManagementService.deleteFoodMenu(new FoodMenu(1,"Breakfast","Veg","Monday")));
     }
 }

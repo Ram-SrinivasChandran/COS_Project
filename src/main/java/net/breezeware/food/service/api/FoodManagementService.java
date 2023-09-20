@@ -17,4 +17,5 @@ public interface FoodManagementService {
     String addFoodMenuFoodItemMap(List<FoodItem> foodItems,int foodMenuId);
     void retrieveFoodMenu();
     void updateFoodMenu(FoodMenuDto foodMenuDto);
+    boolean deleteFoodMenu(FoodMenu foodMenu);
 }

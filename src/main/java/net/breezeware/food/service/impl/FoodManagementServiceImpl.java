@@ -65,4 +65,14 @@ public class FoodManagementServiceImpl implements FoodManagementService {
             System.out.println("There is no Menu with the given Food Item Detail");
         }
     }
+    public boolean deleteFoodMenu(FoodMenu foodMenu){
+        if(foodMenuRepository.checkMenu(foodMenu)) {
+            System.out.println("The Food Menu Is Deleted.");
+            return foodMenuRepository.deleteFoodMenu(foodMenu);
+        }
+        else{
+            System.out.println("There is no Menu with the given Food Item Detail");
+            return false;
+        }
+    }
 }

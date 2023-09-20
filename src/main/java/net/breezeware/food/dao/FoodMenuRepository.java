@@ -116,5 +116,28 @@ public class FoodMenuRepository {
         }
         return isMenuAvailable;
     }
-
+    public boolean deleteFoodMenu(FoodMenu foodMenu){
+        boolean isMenuAvailable=true;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            PreparedStatement statement=connection.prepareStatement("DELETE FROM food_menu_food_item_map WHERE food_menu_id="+foodMenu.getId());
+            statement.execute();
+            statement.close();
+            PreparedStatement statement1=connection.prepareStatement("DELETE FROM "+TABLE_NAME+" WHERE id="+foodMenu.getId());
+            statement1.execute();
+            statement1.close();
+            Statement statement2=connection.createStatement();
+            ResultSet resultSet=statement2.executeQuery("SELECT * FROM "+TABLE_NAME+" WHERE id="+foodMenu.getId());
+            if(resultSet.next()){
+                isMenuAvailable=false;
+            }
+            resultSet.close();
+            statement2.close();
+            connection.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return isMenuAvailable;
+    }
 }
