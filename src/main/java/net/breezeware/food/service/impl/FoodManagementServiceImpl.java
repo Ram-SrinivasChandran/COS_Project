@@ -36,11 +36,11 @@ public class FoodManagementServiceImpl implements FoodManagementService {
         int foodMenuId = foodMenuRepository.addFoodMenu(foodMenu, foodItems);
         if(foodMenuId!=0){
             System.out.println("Food Menu is Added.");
-            foodMenuName=addFoodMenuFoodItemMap(foodItems,foodMenuId);
             for (var foodItem:
                     foodItems) {
                 addFoodItem(foodItem);
             }
+            foodMenuName=addFoodMenuFoodItemMap(foodItems,foodMenuId);
         }
         return foodMenuName;
     }

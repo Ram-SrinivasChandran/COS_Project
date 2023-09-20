@@ -16,6 +16,12 @@ public class FoodItem {
                 '}';
     }
 
+    public FoodItem(String name, double cost, int quantity) {
+        this.name = name;
+        this.cost = cost;
+        this.quantity = quantity;
+    }
+
     public FoodItem(int id, String name, double cost, int quantity) {
         this.id = id;
         this.name = name;

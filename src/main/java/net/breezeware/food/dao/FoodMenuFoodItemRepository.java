@@ -19,9 +19,17 @@ public class FoodMenuFoodItemRepository {
             assert connection!=null;
             for (var foodItem:
                  foodItems) {
+                Statement statement=connection.createStatement();
+                ResultSet resultSet=statement.executeQuery("SELECT * FROM food_item WHERE name='"+foodItem.getName()+"'");
+                int foodItemId = 0;
+                if(resultSet.next()){
+                    foodItemId=resultSet.getInt("id");
+                }
+                resultSet.close();
+                statement.close();
                 PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO "+TABLE_NAME+" (food_menu_id,food_item_id) VALUES (?,?)");
                 preparedStatement.setInt(1,foodMenuId);
-                preparedStatement.setInt(2,foodItem.getId());
+                preparedStatement.setInt(2,foodItemId);
                 preparedStatement.execute();
                 preparedStatement.close();
             }

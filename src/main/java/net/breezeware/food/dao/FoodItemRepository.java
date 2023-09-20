@@ -14,11 +14,10 @@ public class FoodItemRepository {
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
-            PreparedStatement statement=connection.prepareStatement("INSERT INTO "+TABLE_NAME+" VALUES (?,?,?,?)");
-            statement.setInt(1,foodItem.getId());
-            statement.setString(2,foodItem.getName());
-            statement.setDouble(3,foodItem.getCost());
-            statement.setInt(4,foodItem.getQuantity());
+            PreparedStatement statement=connection.prepareStatement("INSERT INTO "+TABLE_NAME+" (name,cost,quantity) VALUES (?,?,?)");
+            statement.setString(1,foodItem.getName());
+            statement.setDouble(2,foodItem.getCost());
+            statement.setInt(3,foodItem.getQuantity());
             recordsInserted = statement.executeUpdate();
             System.out.println("The Food Item is Added." );
             statement.close();

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FoodManagementServiceImplTest {
@@ -18,7 +17,7 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(1)
     void addFoodItem() {
-        FoodItem foodItem = new FoodItem(1,"Idly",10,2);
+        FoodItem foodItem = new FoodItem("Idly",10,2);
         assertEquals(1,foodManagementService.addFoodItem(foodItem));
     }
     @Test
@@ -30,7 +29,7 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(3)
     void updateFoodItem(){
-        FoodItem foodItem = new FoodItem(1,"dosa",20,5);
+        FoodItem foodItem = new FoodItem(1,"Dosa",20,5);
         assertEquals(1,foodManagementService.updateFoodItem(foodItem));
     }
     @Test
@@ -42,10 +41,10 @@ class FoodManagementServiceImplTest {
     @Order(5)
     void addFoodMenu(){
     List<FoodItem> foodItems=new ArrayList<>();
-    foodItems.add(new FoodItem(1,"Idly",10,20));
-    foodItems.add(new FoodItem(2,"Dosa",20,20));
-    foodItems.add(new FoodItem(3,"Poori",25,30));
-    FoodMenu foodMenu=new FoodMenu(1,"Breakfast","Veg","Monday");
+    foodItems.add(new FoodItem("Idly",10,20));
+    foodItems.add(new FoodItem("Dosa",20,20));
+    foodItems.add(new FoodItem("Poori",25,30));
+    FoodMenu foodMenu=new FoodMenu("Breakfast","Veg","Monday");
     assertEquals("Breakfast",foodManagementService.addFoodMenu(foodMenu,foodItems));
     }
 }

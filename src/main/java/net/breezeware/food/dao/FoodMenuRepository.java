@@ -3,8 +3,6 @@ package net.breezeware.food.dao;
 import net.breezeware.DataBaseConnection;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
-import net.breezeware.food.service.api.FoodManagementService;
-import net.breezeware.food.service.impl.FoodManagementServiceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
