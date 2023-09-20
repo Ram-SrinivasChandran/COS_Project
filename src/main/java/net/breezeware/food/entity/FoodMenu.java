@@ -6,6 +6,13 @@ public class FoodMenu {
     private String type;
     private String availabilityOn;
 
+    public FoodMenu(int id, String name, String type, String availabilityOn) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.availabilityOn = availabilityOn;
+    }
+
     public int getId() {
         return id;
     }
