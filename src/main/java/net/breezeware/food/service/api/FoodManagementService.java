@@ -53,11 +53,10 @@ public interface FoodManagementService {
     /**
      * Add a new food menu along with its associated food items.
      *
-     * @param foodMenu  The food menu object to be added.
-     * @param foodItems The list of food items to be associated with the menu.
+     * @param foodMenuDto  The food menu DTO contains the food menu object and list of foodItems to be added.
      * @return The name of the added food menu.
      */
-    String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems);
+    String addFoodMenu(FoodMenuDto foodMenuDto);
 
     /**
      * Add mappings between food items and a food menu.

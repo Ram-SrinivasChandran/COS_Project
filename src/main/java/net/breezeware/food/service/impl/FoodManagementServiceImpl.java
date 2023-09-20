@@ -75,19 +75,18 @@ public class FoodManagementServiceImpl implements FoodManagementService {
     /**
      * Add a new food menu along with its associated food items.
      *
-     * @param foodMenu  The food menu object to be added.
-     * @param foodItems The list of food items to be associated with the menu.
+     * @param foodMenuDto  The food menu DTO contains the food menu object and list of foodItems to be added.
      * @return The name of the added food menu.
      */
-    public String addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems) {
+    public String addFoodMenu(FoodMenuDto foodMenuDto) {
         String foodMenuName = null;
-        int foodMenuId = foodMenuRepository.addFoodMenu(foodMenu, foodItems);
+        int foodMenuId = foodMenuRepository.addFoodMenu(foodMenuDto.getFoodMenu());
         if (foodMenuId != 0) {
             System.out.println("Food Menu is Added.");
-            for (var foodItem : foodItems) {
+            for (var foodItem : foodMenuDto.getFoodItems()) {
                 addFoodItem(foodItem);
             }
-            foodMenuName = addFoodMenuFoodItemMap(foodItems, foodMenuId);
+            foodMenuName = addFoodMenuFoodItemMap(foodMenuDto.getFoodItems(), foodMenuId);
         }
         return foodMenuName;
     }

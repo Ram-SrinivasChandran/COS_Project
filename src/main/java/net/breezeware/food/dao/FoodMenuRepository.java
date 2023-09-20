@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,11 +26,10 @@ public class FoodMenuRepository {
     /**
      * Adds a new food menu along with associated food items to the database.
      *
-     * @param foodMenu   The food menu to be added.
-     * @param foodItems  The list of associated food items.
+     * @param foodMenu The food menu to be added.
      * @return The unique identifier of the added food menu.
      */
-    public int addFoodMenu(FoodMenu foodMenu, List<FoodItem> foodItems) {
+    public int addFoodMenu(FoodMenu foodMenu) {
         int foodMenuId = 0;
         try {
             connection = DataBaseConnection.getConnection();
