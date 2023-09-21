@@ -79,16 +79,16 @@ public class FoodManagementServiceImpl implements FoodManagementService {
      * @return The name of the added food menu.
      */
     public String addFoodMenu(FoodMenuDto foodMenuDto) {
-        String foodMenuName = null;
+        String foodMenuDay = null;
         int foodMenuId = foodMenuRepository.addFoodMenu(foodMenuDto.getFoodMenu());
         if (foodMenuId != 0) {
             System.out.println("Food Menu is Added.");
             for (var foodItem : foodMenuDto.getFoodItems()) {
                 addFoodItem(foodItem);
             }
-            foodMenuName = addFoodMenuFoodItemMap(foodMenuDto.getFoodItems(), foodMenuId);
+            foodMenuDay = addFoodMenuFoodItemMap(foodMenuDto.getFoodItems(), foodMenuId);
         }
-        return foodMenuName;
+        return foodMenuDay;
     }
 
     /**

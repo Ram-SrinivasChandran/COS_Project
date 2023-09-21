@@ -75,7 +75,7 @@ class FoodManagementServiceImplTest {
         foodItems.add(new FoodItem("Parotta",25,30));
         String days= String.valueOf(Days.Sunday);
         FoodMenu foodMenu=new FoodMenu("Breakfast","Veg",days);
-        assertEquals("Breakfast",foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu,foodItems)));
+        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu,foodItems)));
         // Test adding a lunch menu
         List<FoodItem> foodItems1=new ArrayList<>();
         foodItems1.add(new FoodItem("Idly",10,20));

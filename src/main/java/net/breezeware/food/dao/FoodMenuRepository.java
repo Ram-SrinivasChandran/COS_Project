@@ -40,17 +40,17 @@ public class FoodMenuRepository {
             preparedStatement.setString(2, foodMenu.getType());
             preparedStatement.setString(3, foodMenu.getAvailabilityOn());
             preparedStatement.execute();
+            preparedStatement.close();
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + TABLE_NAME + " WHERE name = '" + foodMenu.getName() + "'");
+                    "SELECT * FROM " + TABLE_NAME + " WHERE availabilityOn = '" + foodMenu.getAvailabilityOn() + "'");
             if (resultSet.next()) {
                 foodMenuId = resultSet.getInt("id");
             }
 
             resultSet.close();
             statement.close();
-            preparedStatement.close();
             connection.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());

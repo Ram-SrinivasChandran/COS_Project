@@ -28,7 +28,7 @@ public class FoodMenuFoodItemRepository {
      * @return The name of the food menu to which the items were mapped.
      */
     public String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId) {
-        String foodMenuName = null;
+        String foodMenuDay = null;
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
@@ -55,7 +55,7 @@ public class FoodMenuFoodItemRepository {
             ResultSet resultSet = statement.executeQuery(
                     "SELECT * FROM food_menu WHERE id = " + foodMenuId);
             if (resultSet.next()) {
-                foodMenuName = resultSet.getString("name");
+                foodMenuDay = resultSet.getString("availabilityOn");
             }
             resultSet.close();
             statement.close();
@@ -63,6 +63,6 @@ public class FoodMenuFoodItemRepository {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return foodMenuName;
+        return foodMenuDay;
     }
 }
