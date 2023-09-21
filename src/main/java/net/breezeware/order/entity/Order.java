@@ -1,4 +1,4 @@
-package net.breezeware.order;
+package net.breezeware.order.entity;
 
 import net.breezeware.user.entity.User;
 import java.time.Instant;

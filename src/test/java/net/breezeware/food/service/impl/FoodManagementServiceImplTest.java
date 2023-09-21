@@ -3,6 +3,7 @@ package net.breezeware.food.service.impl;
 import net.breezeware.food.dto.FoodMenuDto;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
+import net.breezeware.food.enumeration.Days;
 import net.breezeware.food.service.api.FoodManagementService;
 import org.junit.jupiter.api.*;
 
@@ -71,8 +72,9 @@ class FoodManagementServiceImplTest {
         List<FoodItem> foodItems=new ArrayList<>();
         foodItems.add(new FoodItem("Idly",10,20));
         foodItems.add(new FoodItem("Dosa",20,20));
-        foodItems.add(new FoodItem("Poori",25,30));
-        FoodMenu foodMenu=new FoodMenu("Breakfast","Veg","Monday");
+        foodItems.add(new FoodItem("Parotta",25,30));
+        String days= String.valueOf(Days.Sunday);
+        FoodMenu foodMenu=new FoodMenu("Breakfast","Veg",days);
         assertEquals("Breakfast",foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu,foodItems)));
         // Test adding a lunch menu
         List<FoodItem> foodItems1=new ArrayList<>();

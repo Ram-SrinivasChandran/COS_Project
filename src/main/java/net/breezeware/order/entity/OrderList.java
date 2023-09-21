@@ -1,6 +1,7 @@
-package net.breezeware.order;
+package net.breezeware.order.entity;
 
 import net.breezeware.food.entity.FoodItem;
+import net.breezeware.order.entity.Order;
 
 /**
  * Represents an item within an order, containing information about the ordered food item,
