@@ -87,7 +87,7 @@ class FoodManagementServiceImplTest {
         List<FoodItem> foodItems2=new ArrayList<>();
         foodItems2.add(new FoodItem("Briyani",50,20));
         foodItems2.add(new FoodItem("Parotta",10,30));
-        String days= String.valueOf(Days.Sunday);
+        String days= String.valueOf(Days.SUNDAY);
         FoodMenu foodMenu2=new FoodMenu(21,"Dinner","N-Veg",days);
         assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu2,foodItems2)));
     }

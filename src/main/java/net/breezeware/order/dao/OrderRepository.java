@@ -2,15 +2,19 @@ package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
 import net.breezeware.food.enumeration.Days;
+import net.breezeware.order.enumeration.OrderStatus;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderRepository {
     Connection connection;
+    public static final String TABLE_NAME_ORDER="order";
     public void viewFoodMenu(Days day){
         List<Integer>foodMenuIds=new ArrayList<>();
         try{
@@ -56,8 +60,45 @@ public class OrderRepository {
                     resultSet2.close();
                     statement2.close();
                 }
+                connection.close();
             }
         }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+    public boolean userCheck(int userId){
+        boolean checkUser=false;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM user WHERE id='"+userId+"'");
+            if(resultSet.next()){
+                   if(resultSet.getString("role").equals("Customer")){
+                       checkUser=true;
+                   }
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return checkUser;
+    }
+    public void orderInCart(int orderId,int userId){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            PreparedStatement statement=connection.prepareStatement("INSERT INTO \""+TABLE_NAME_ORDER+"\" (id,user_id,status) VALUES (?,?,?)");
+            statement.setInt(1,orderId);
+            statement.setInt(2,userId);
+            statement.setString(3, String.valueOf(OrderStatus.IN_CART));
+            statement.execute();
+            statement.close();
+            connection.close();
+        }catch (Exception e){
             System.out.println(e.getMessage());
         }
 

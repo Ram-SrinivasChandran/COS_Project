@@ -18,6 +18,17 @@ public class Order {
     private Instant orderOn;        // The timestamp when the order was placed.
     private Instant deliveryOn;     // The timestamp when the order will be delivered.
 
+    public Order(int id, User userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
+    public Order(String email, long phoneNumber, String orderLocation) {
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.orderLocation = orderLocation;
+    }
+
     /**
      * Get the unique identifier of the order.
      *
