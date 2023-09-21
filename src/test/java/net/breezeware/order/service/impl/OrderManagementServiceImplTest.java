@@ -14,7 +14,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(1)
     void viewFoodMenu(){
-        Days day=Days.Monday;
+        Days day=Days.Sunday;
         orderManagementService.viewFoodMenu(day);
     }
 }

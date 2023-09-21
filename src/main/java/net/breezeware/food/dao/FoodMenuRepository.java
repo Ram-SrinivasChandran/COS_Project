@@ -35,22 +35,14 @@ public class FoodMenuRepository {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO " + TABLE_NAME + " (name, type, availabilityOn) VALUES (?, ?, ?)");
-            preparedStatement.setString(1, foodMenu.getName());
-            preparedStatement.setString(2, foodMenu.getType());
-            preparedStatement.setString(3, foodMenu.getAvailabilityOn());
+                    "INSERT INTO " + TABLE_NAME + " (id,name, type, availabilityOn) VALUES (?,?, ?, ?)");
+            preparedStatement.setInt(1, foodMenu.getId());
+            preparedStatement.setString(2, foodMenu.getName());
+            preparedStatement.setString(3, foodMenu.getType());
+            preparedStatement.setString(4, foodMenu.getAvailabilityOn());
+            foodMenuId = foodMenu.getId();
             preparedStatement.execute();
             preparedStatement.close();
-
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + TABLE_NAME + " WHERE availabilityOn = '" + foodMenu.getAvailabilityOn() + "'");
-            if (resultSet.next()) {
-                foodMenuId = resultSet.getInt("id");
-            }
-
-            resultSet.close();
-            statement.close();
             connection.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
