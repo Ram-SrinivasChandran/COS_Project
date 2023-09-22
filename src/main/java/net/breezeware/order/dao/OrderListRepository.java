@@ -2,11 +2,13 @@ package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
 import net.breezeware.order.dto.FoodItemDto;
+import net.breezeware.order.dto.OrderViewResponseDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderListRepository {
@@ -97,6 +99,36 @@ public class OrderListRepository {
             }
             connection.close();
         }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void viewOrderItems(int orderId){
+        List<OrderViewResponseDto>orderViewResponses=new ArrayList<>();
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+ORDER_ITEM_TABLE+" WHERE order_id="+orderId);
+            while(resultSet.next()){
+                orderViewResponses.add(new OrderViewResponseDto(resultSet.getInt("food_item_id"), resultSet.getInt("quantity"),resultSet.getDouble("cost")));
+            }
+            resultSet.close();
+            statement.close();
+            for (var orderViewResponse:
+                 orderViewResponses) {
+                Statement statement1=connection.createStatement();
+                ResultSet resultSet1=statement1.executeQuery("SELECT * FROM food_item WHERE id="+orderViewResponse.getFoodItemId());
+                if(resultSet1.next()){
+                    System.out.println("Food ID : "+orderViewResponse.getFoodItemId()+
+                            ", Food Name : "+resultSet1.getString("name")+
+                            ", Quantity : "+orderViewResponse.getFoodItemQuantity()+
+                            ", Cost : "+orderViewResponse.getFoodItemCost());
+                }
+                resultSet1.close();
+                statement1.close();
+            }
+            connection.close();
+        }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }

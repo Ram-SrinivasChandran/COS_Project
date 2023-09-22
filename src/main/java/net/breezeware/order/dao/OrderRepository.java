@@ -103,5 +103,24 @@ public class OrderRepository {
         }
 
     }
+    public void viewOrder(int orderId){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM \""+TABLE_NAME_ORDER+"\" WHERE id="+orderId);
+            if(resultSet.next()){
+                System.out.println("Id : "+resultSet.getInt("id")+
+                        ", User Id : "+resultSet.getInt("user_id")+
+                        ", Total Cost : "+resultSet.getDouble("total_cost")+
+                        ", Status : "+resultSet.getString("status"));
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

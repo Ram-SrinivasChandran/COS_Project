@@ -9,4 +9,5 @@ import java.util.List;
 public interface OrderManagementService {
     void viewFoodMenu(Days day);
     void orderInCart(OrderDto orderDto);
+    void viewOrder(int orderId);
 }

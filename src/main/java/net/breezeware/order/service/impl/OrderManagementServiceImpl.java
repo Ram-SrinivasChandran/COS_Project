@@ -28,4 +28,8 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             orderListRepository.updateFoodItemQuantity(foodItems);
         }
     }
+    public void viewOrder(int orderId){
+        orderRepository.viewOrder(orderId);
+        orderListRepository.viewOrderItems(orderId);
+    }
 }
