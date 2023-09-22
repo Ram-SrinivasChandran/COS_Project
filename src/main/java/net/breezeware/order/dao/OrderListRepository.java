@@ -2,6 +2,7 @@ package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
 import net.breezeware.order.dto.FoodItemDto;
+import net.breezeware.order.dto.OrderUpdateDto;
 import net.breezeware.order.dto.OrderViewResponseDto;
 
 import java.sql.Connection;
@@ -26,7 +27,7 @@ public class OrderListRepository {
                     foodItems.get(i).setFoodCost(resultSet.getDouble("cost"));
                     foodItems.get(i).setTotalQuantity(resultSet.getInt("quantity"));
                     if(foodItems.get(i).getTotalQuantity()< foodItems.get(i).getFoodItemQuantity()){
-                        System.out.println(foodItems.get(i).getFoodItemId()+" is less than Your Required Quantity.");
+                        System.out.println(resultSet.getString("name")+" is less than Your Required Quantity.");
                         foodItems.get(i).setFoodItemId(-(i));
                     }
                 }else{
@@ -127,6 +128,58 @@ public class OrderListRepository {
                 resultSet1.close();
                 statement1.close();
             }
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void getFoodItemCost(OrderUpdateDto orderUpdateDto){
+        int quantity=0;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+ORDER_ITEM_TABLE+" WHERE order_id="+orderUpdateDto.getOrderId()+" AND food_item_id="+orderUpdateDto.getFoodItemId());
+            if(resultSet.next()){
+                orderUpdateDto.setOldQuantity(resultSet.getInt("quantity"));
+            }
+            resultSet.close();
+            statement.close();
+            Statement statement1=connection.createStatement();
+            ResultSet resultSet1=statement1.executeQuery("SELECT * FROM food_item WHERE id="+orderUpdateDto.getFoodItemId());
+            if(resultSet1.next()){
+                orderUpdateDto.setCost(resultSet1.getDouble("cost"));
+                int extraQuantity= orderUpdateDto.getNewQuantity()-orderUpdateDto.getOldQuantity();
+                if(orderUpdateDto.getOldQuantity()<orderUpdateDto.getNewQuantity()){
+                    if(orderUpdateDto.getNewQuantity()-orderUpdateDto.getOldQuantity()>resultSet1.getInt("quantity")){
+                        System.out.println(resultSet1.getString("name")+" is less than Your Required Quantity.");
+                    }else{
+                        quantity=resultSet1.getInt("quantity")+extraQuantity;
+                    }
+                }else{
+                    quantity=resultSet1.getInt("quantity")+extraQuantity;
+                }
+            }
+            resultSet1.close();
+            statement1.close();
+            PreparedStatement preparedStatement=connection.prepareStatement("UPDATE food_item SET quantity=? WHERE id="+orderUpdateDto.getFoodItemId());
+            preparedStatement.setInt(1,quantity);
+            preparedStatement.execute();
+            preparedStatement.close();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void UpdateOrderItem(OrderUpdateDto updateDate){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            PreparedStatement preparedStatement=connection.prepareStatement("UPDATE "+ORDER_ITEM_TABLE+" SET quantity=?,cost=? WHERE order_id="+updateDate.getOrderId()+" AND food_item_id="+updateDate.getFoodItemId());
+            preparedStatement.setInt(1,updateDate.getNewQuantity());
+            preparedStatement.setDouble(2,(updateDate.getCost()*updateDate.getNewQuantity()));
+            preparedStatement.execute();
+            preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());

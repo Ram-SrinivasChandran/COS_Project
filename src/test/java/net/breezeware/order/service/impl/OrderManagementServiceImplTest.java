@@ -4,6 +4,7 @@ import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderDto;
+import net.breezeware.order.dto.OrderUpdateDto;
 import net.breezeware.order.service.api.OrderManagementService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -34,5 +35,10 @@ class OrderManagementServiceImplTest {
     @Order(3)
     void viewOrder(){
         orderManagementService.viewOrder(1);
+    }
+    @Test
+    @Order(4)
+    void updateOrderItem(){
+        orderManagementService.updateOrderItem(new OrderUpdateDto(1,1,6));
     }
 }
