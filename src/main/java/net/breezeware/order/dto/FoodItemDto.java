@@ -1,8 +1,10 @@
 package net.breezeware.order.dto;
 
 public class FoodItemDto {
-    int foodItemId;
-    int foodItemQuantity;
+    private int foodItemId;
+    private int foodItemQuantity;
+    private double foodCost;
+    private int totalQuantity;
 
     public FoodItemDto(int foodItemId, int foodItemQuantity) {
         this.foodItemId = foodItemId;
@@ -23,5 +25,21 @@ public class FoodItemDto {
 
     public void setFoodItemQuantity(int foodItemQuantity) {
         this.foodItemQuantity = foodItemQuantity;
+    }
+
+    public double getFoodCost() {
+        return foodCost;
+    }
+
+    public void setFoodCost(double foodCost) {
+        this.foodCost = foodCost;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 }

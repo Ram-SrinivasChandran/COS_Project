@@ -27,7 +27,7 @@ class OrderManagementServiceImplTest {
     void orderInCart(){
         List<FoodItemDto> foodItems=new ArrayList<>();
         foodItems.add(new FoodItemDto(1,5));
-        foodItems.add(new FoodItemDto(2,5));
+        foodItems.add(new FoodItemDto(2,21));
         orderManagementService.orderInCart(new OrderDto(2,1,foodItems));
     }
 }

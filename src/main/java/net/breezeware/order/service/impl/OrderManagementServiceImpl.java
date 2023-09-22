@@ -1,6 +1,7 @@
 package net.breezeware.order.service.impl;
 
 import net.breezeware.food.enumeration.Days;
+import net.breezeware.order.dao.OrderListRepository;
 import net.breezeware.order.dao.OrderRepository;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderDto;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class OrderManagementServiceImpl implements OrderManagementService {
     OrderRepository orderRepository=new OrderRepository();
+    OrderListRepository orderListRepository=new OrderListRepository();
     public void viewFoodMenu(Days day){
         orderRepository.viewFoodMenu(day);
     }
@@ -20,6 +22,10 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         }
         else{
             orderRepository.orderInCart(orderDto.getOrderId(),orderDto.getUserId());
+            List<FoodItemDto> foodItems = orderListRepository.getFoodItemCost(orderDto.getFoodItems());
+            orderListRepository.addFoodOrderItem(orderDto.getOrderId(),foodItems);
+            orderListRepository.updateOrderCost(orderDto.getOrderId());
+            orderListRepository.updateFoodItemQuantity(foodItems);
         }
     }
 }

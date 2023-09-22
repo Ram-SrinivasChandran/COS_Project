@@ -1,4 +1,103 @@
 package net.breezeware.order.dao;
 
+import net.breezeware.DataBaseConnection;
+import net.breezeware.order.dto.FoodItemDto;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.List;
+
 public class OrderListRepository {
+    Connection connection;
+    public static final String ORDER_ITEM_TABLE = "order_item";
+
+    public List<FoodItemDto> getFoodItemCost(List<FoodItemDto>foodItems){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            for(int i=0;i<foodItems.size();i++){
+                Statement statement=connection.createStatement();
+                ResultSet resultSet=statement.executeQuery("SELECT * FROM food_item WHERE id="+ foodItems.get(i).getFoodItemId());
+                if (resultSet.next()){
+                    foodItems.get(i).setFoodCost(resultSet.getDouble("cost"));
+                    foodItems.get(i).setTotalQuantity(resultSet.getInt("quantity"));
+                    if(foodItems.get(i).getTotalQuantity()< foodItems.get(i).getFoodItemQuantity()){
+                        System.out.println(foodItems.get(i).getFoodItemId()+" is less than Your Required Quantity.");
+                        foodItems.get(i).setFoodItemId(-(i));
+                    }
+                }else{
+                    System.out.println("No Food Item Available with the Given Id.");
+                    foodItems.get(i).setFoodItemId(-(i));
+                }
+                resultSet.close();
+                statement.close();
+            }
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return foodItems;
+    }
+    public void addFoodOrderItem(int orderId, List<FoodItemDto>foodItems){
+        try{
+            connection= DataBaseConnection.getConnection();
+            assert connection != null;
+            for (var foodItem:
+                 foodItems) {
+                if(foodItem.getFoodItemId()>0){
+                    PreparedStatement preparedStatement=connection.prepareStatement("INSERT INTO "+ORDER_ITEM_TABLE+" (order_id,food_item_id,quantity,cost) VALUES (?,?,?,?)");
+                    preparedStatement.setInt(1,orderId);
+                    preparedStatement.setInt(2,foodItem.getFoodItemId());
+                    preparedStatement.setInt(3,foodItem.getFoodItemQuantity());
+                    preparedStatement.setDouble(4,(foodItem.getFoodCost()*foodItem.getFoodItemQuantity()));
+                    preparedStatement.execute();
+                    preparedStatement.close();
+                }
+            }
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void updateOrderCost(int orderId){
+        double totalCost=0;
+        try{
+            connection =DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+ORDER_ITEM_TABLE+" WHERE order_id="+orderId);
+            while (resultSet.next()){
+                totalCost+=resultSet.getDouble("cost");
+            }
+            resultSet.close();
+            statement.close();
+            PreparedStatement preparedStatement=connection.prepareStatement("UPDATE \"order\" SET total_cost=? WHERE id="+orderId);
+            preparedStatement.setDouble(1,totalCost);
+            preparedStatement.execute();
+            preparedStatement.close();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void updateFoodItemQuantity(List<FoodItemDto>foodItems){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            for (var foodItem:
+                 foodItems) {
+                if(foodItem.getFoodItemId()>0){
+                    PreparedStatement preparedStatement=connection.prepareStatement("UPDATE food_item SET quantity=? WHERE id="+foodItem.getFoodItemId());
+                    preparedStatement.setInt(1,foodItem.getTotalQuantity()-foodItem.getFoodItemQuantity());
+                    preparedStatement.execute();
+                    preparedStatement.close();
+                }
+            }
+            connection.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 }
