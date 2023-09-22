@@ -154,10 +154,10 @@ public class OrderListRepository {
                     if(orderUpdateDto.getNewQuantity()-orderUpdateDto.getOldQuantity()>resultSet1.getInt("quantity")){
                         System.out.println(resultSet1.getString("name")+" is less than Your Required Quantity.");
                     }else{
-                        quantity=resultSet1.getInt("quantity")+extraQuantity;
+                        quantity=resultSet1.getInt("quantity")-extraQuantity;
                     }
                 }else{
-                    quantity=resultSet1.getInt("quantity")+extraQuantity;
+                    quantity=resultSet1.getInt("quantity")-extraQuantity;
                 }
             }
             resultSet1.close();

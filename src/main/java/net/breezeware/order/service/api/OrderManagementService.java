@@ -11,5 +11,6 @@ public interface OrderManagementService {
     void viewFoodMenu(Days day);
     void orderInCart(OrderDto orderDto);
     void viewOrder(int orderId);
-    void updateOrderItem(OrderUpdateDto orderUpdateDto);
+    void updateOrderItem(List<OrderUpdateDto> orderUpdateDtos);
+    void placeOrder();
 }

@@ -1,6 +1,4 @@
 package net.breezeware.order.service.impl;
-
-import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderDto;
@@ -39,6 +37,9 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(4)
     void updateOrderItem(){
-        orderManagementService.updateOrderItem(new OrderUpdateDto(1,1,6));
+        List<OrderUpdateDto> orderUpdateDtos=new ArrayList<>();
+        orderUpdateDtos.add(new OrderUpdateDto(1,1,10));
+        orderUpdateDtos.add(new OrderUpdateDto(1,2,5));
+        orderManagementService.updateOrderItem(orderUpdateDtos);
     }
 }

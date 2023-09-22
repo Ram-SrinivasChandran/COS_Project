@@ -33,7 +33,15 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         orderRepository.viewOrder(orderId);
         orderListRepository.viewOrderItems(orderId);
     }
-    public void updateOrderItem(OrderUpdateDto orderUpdateDto){
-        orderListRepository.UpdateOrderItem(orderUpdateDto);
+    public void updateOrderItem(List<OrderUpdateDto> orderUpdateDtos){
+        for (var orderUpdateDto:
+             orderUpdateDtos) {
+            orderListRepository.getFoodItemCost(orderUpdateDto);
+            orderListRepository.UpdateOrderItem(orderUpdateDto);
+            orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
+        }
+    }
+    public void placeOrder(){
+
     }
 }
