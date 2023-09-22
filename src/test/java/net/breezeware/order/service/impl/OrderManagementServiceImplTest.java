@@ -3,6 +3,7 @@ import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderDto;
 import net.breezeware.order.dto.OrderUpdateDto;
+import net.breezeware.order.dto.PlaceOrderDto;
 import net.breezeware.order.service.api.OrderManagementService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -41,5 +42,11 @@ class OrderManagementServiceImplTest {
         orderUpdateDtos.add(new OrderUpdateDto(1,1,10));
         orderUpdateDtos.add(new OrderUpdateDto(1,2,5));
         orderManagementService.updateOrderItem(orderUpdateDtos);
+    }
+    @Test
+    @Order(5)
+    void placeOrder(){
+        PlaceOrderDto placeOrderDto=new PlaceOrderDto("chand2ram@gmail.com","9677963066","Ganapathy");
+        orderManagementService.placeOrder(1,placeOrderDto);
     }
 }

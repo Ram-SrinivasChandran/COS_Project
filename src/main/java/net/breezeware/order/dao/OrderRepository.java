@@ -2,12 +2,14 @@ package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
 import net.breezeware.food.enumeration.Days;
+import net.breezeware.order.dto.PlaceOrderDto;
 import net.breezeware.order.enumeration.OrderStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -117,6 +119,25 @@ public class OrderRepository {
             }
             resultSet.close();
             statement.close();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void placeOrder(int orderId,PlaceOrderDto placeOrderDto){
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            PreparedStatement preparedStatement=connection.prepareStatement("UPDATE \""+TABLE_NAME_ORDER+"\" SET email=?,phone_number=?,order_location=?,status=?,order_on=?,delivery_on=? WHERE id="+orderId);
+            preparedStatement.setString(1,placeOrderDto.getEmail());
+            preparedStatement.setString(2, placeOrderDto.getPhoneNumber());
+            preparedStatement.setString(3,placeOrderDto.getOrderLocation());
+            preparedStatement.setString(4, String.valueOf(OrderStatus.ORDER_PLACED));
+            preparedStatement.setString(5, String.valueOf(LocalTime.now(Clock.systemDefaultZone())));
+            preparedStatement.setString(6, String.valueOf(LocalTime.now(Clock.systemDefaultZone()).plus(Duration.ofHours(1))));
+            preparedStatement.execute();
+            preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());

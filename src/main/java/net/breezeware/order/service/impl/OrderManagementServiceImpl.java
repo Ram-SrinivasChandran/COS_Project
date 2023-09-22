@@ -6,9 +6,11 @@ import net.breezeware.order.dao.OrderRepository;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderDto;
 import net.breezeware.order.dto.OrderUpdateDto;
+import net.breezeware.order.dto.PlaceOrderDto;
 import net.breezeware.order.service.api.OrderManagementService;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class OrderManagementServiceImpl implements OrderManagementService {
     OrderRepository orderRepository=new OrderRepository();
@@ -41,7 +43,25 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
         }
     }
-    public void placeOrder(){
-
+    public void placeOrder(int orderId,PlaceOrderDto placeOrderDto){
+        if(validateEmail(placeOrderDto.getEmail()) && validatePhoneNumber(placeOrderDto.getPhoneNumber())){
+        orderRepository.placeOrder(orderId,placeOrderDto);
+        }
+        else{
+            System.out.println("Your Email or Phone Number is Not in correct Format");
+        }
+    }
+    private boolean validateEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
+    private boolean validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber.length() != 10) {
+            return false;
+        }
+        String phoneRegex = "^[0-9()-]+$";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        return pattern.matcher(phoneNumber).matches();
     }
 }
