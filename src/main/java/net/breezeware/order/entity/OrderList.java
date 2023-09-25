@@ -9,10 +9,17 @@ import net.breezeware.order.entity.Order;
  */
 public class OrderList {
     private int id;            // Unique identifier for the order list item.
-    private Order orderId;     // The order to which this item belongs.
-    private FoodItem foodItemId; // The food item that is part of this order list item.
+    private int orderId;     // The order to which this item belongs.
+    private int foodItemId; // The food item that is part of this order list item.
     private int quantity;      // The quantity of the food item in the order.
     private double cost;       // The cost associated with this order list item.
+
+    public OrderList(int orderId, int foodItemId, int quantity, double cost) {
+        this.orderId = orderId;
+        this.foodItemId = foodItemId;
+        this.quantity = quantity;
+        this.cost = cost;
+    }
 
     /**
      * Get the unique identifier of the order list item.
@@ -37,7 +44,7 @@ public class OrderList {
      *
      * @return The order to which this item belongs.
      */
-    public Order getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
@@ -46,7 +53,7 @@ public class OrderList {
      *
      * @param orderId The order to which this item belongs.
      */
-    public void setOrderId(Order orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
@@ -55,7 +62,7 @@ public class OrderList {
      *
      * @return The food item that is part of this order list item.
      */
-    public FoodItem getFoodItemId() {
+    public int getFoodItemId() {
         return foodItemId;
     }
 
@@ -64,7 +71,7 @@ public class OrderList {
      *
      * @param foodItemId The food item that is part of this order list item.
      */
-    public void setFoodItemId(FoodItem foodItemId) {
+    public void setFoodItemId(int foodItemId) {
         this.foodItemId = foodItemId;
     }
 

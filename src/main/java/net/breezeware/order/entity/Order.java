@@ -12,11 +12,11 @@ public class Order {
     private int userId;            // The user who placed the order.
     private double totalCost;       // The total cost of the order.
     private String email;           // Email associated with the order.
-    private long phoneNumber;       // Phone number associated with the order.
+    private String phoneNumber;       // Phone number associated with the order.
     private String orderLocation;   // The location for the order delivery.
     private String status;          // The status of the order.
-    private Instant orderOn;        // The timestamp when the order was placed.
-    private Instant deliveryOn;     // The timestamp when the order will be delivered.
+    private String orderOn;        // The timestamp when the order was placed.
+    private String deliveryOn;     // The timestamp when the order will be delivered.
 
     public Order(int id, int userId) {
         this.id = id;
@@ -30,11 +30,24 @@ public class Order {
         this.status = status;
     }
 
-    public Order(String email, long phoneNumber, String orderLocation) {
+    public Order(int id, int userId, double totalCost, String email, String phoneNumber, String orderLocation, String status, String orderOn, String deliveryOn) {
+        this.id = id;
+        this.userId = userId;
+        this.totalCost = totalCost;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.orderLocation = orderLocation;
+        this.status = status;
+        this.orderOn = orderOn;
+        this.deliveryOn = deliveryOn;
+    }
+
+    public Order(String email, String phoneNumber, String orderLocation) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.orderLocation = orderLocation;
     }
+
 
     /**
      * Get the unique identifier of the order.
@@ -113,7 +126,7 @@ public class Order {
      *
      * @return The phone number associated with the order.
      */
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -122,7 +135,7 @@ public class Order {
      *
      * @param phoneNumber The phone number associated with the order.
      */
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -167,7 +180,7 @@ public class Order {
      *
      * @return The timestamp when the order was placed.
      */
-    public Instant getOrderOn() {
+    public String getOrderOn() {
         return orderOn;
     }
 
@@ -176,7 +189,7 @@ public class Order {
      *
      * @param orderOn The timestamp when the order was placed.
      */
-    public void setOrderOn(Instant orderOn) {
+    public void setOrderOn(String orderOn) {
         this.orderOn = orderOn;
     }
 
@@ -185,7 +198,7 @@ public class Order {
      *
      * @return The timestamp when the order will be delivered.
      */
-    public Instant getDeliveryOn() {
+    public String getDeliveryOn() {
         return deliveryOn;
     }
 
@@ -194,7 +207,7 @@ public class Order {
      *
      * @param deliveryOn The timestamp when the order will be delivered.
      */
-    public void setDeliveryOn(Instant deliveryOn) {
+    public void setDeliveryOn(String deliveryOn) {
         this.deliveryOn = deliveryOn;
     }
 }

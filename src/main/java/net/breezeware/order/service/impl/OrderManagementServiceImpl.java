@@ -3,6 +3,7 @@ package net.breezeware.order.service.impl;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dao.OrderListRepository;
+import net.breezeware.order.dao.OrderProcessAndDeliveryRepository;
 import net.breezeware.order.dao.OrderRepository;
 import net.breezeware.order.dto.*;
 import net.breezeware.order.entity.Order;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 public class OrderManagementServiceImpl implements OrderManagementService {
     OrderRepository orderRepository=new OrderRepository();
     OrderListRepository orderListRepository=new OrderListRepository();
+    OrderProcessAndDeliveryRepository orderProcessAndDeliveryRepository=new OrderProcessAndDeliveryRepository();
     public List<ViewFoodMenuDto> viewFoodMenu(Days day){
         return orderRepository.viewFoodMenu(day);
     }
@@ -78,5 +80,8 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         List<OrderCancelDto> orderCancelDtos = orderListRepository.cancelFoodItemList(orderId);
         assert !orderCancelDtos.isEmpty();
         return orderListRepository.changeFoodItemQuantity(orderCancelDtos);
+    }
+    public List<ActiveOrderDto> retrieveListOfActiveOrders(){
+        return orderProcessAndDeliveryRepository.retrieveListOfActiveOrders();
     }
 }

@@ -6,6 +6,12 @@ public class FoodItemDto {
     private double foodCost;
     private int totalQuantity;
 
+    public FoodItemDto(int foodItemId, int foodItemQuantity, double foodCost) {
+        this.foodItemId = foodItemId;
+        this.foodItemQuantity = foodItemQuantity;
+        this.foodCost = foodCost;
+    }
+
     public FoodItemDto(int foodItemId, int foodItemQuantity) {
         this.foodItemId = foodItemId;
         this.foodItemQuantity = foodItemQuantity;
