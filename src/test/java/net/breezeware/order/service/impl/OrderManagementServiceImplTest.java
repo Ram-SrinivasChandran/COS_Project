@@ -3,14 +3,14 @@ import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dto.*;
+import net.breezeware.order.enumeration.OrderStatus;
 import net.breezeware.order.service.api.OrderManagementService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.internal.matchers.Or;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +47,14 @@ class OrderManagementServiceImplTest {
     @Order(2)
     void orderInCart(){
         List<FoodItemDto> foodItems=new ArrayList<>();
-        foodItems.add(new FoodItemDto(3,5));
-        foodItems.add(new FoodItemDto(4,5));
-        assertEquals(foodItems.size(),orderManagementService.orderInCart(new OrderDto(2,2,foodItems)));
+        foodItems.add(new FoodItemDto(5,5));
+        foodItems.add(new FoodItemDto(6,5));
+        assertEquals(foodItems.size(),orderManagementService.orderInCart(new OrderDto(2,3,foodItems)));
     }
     @Test
     @Order(3)
     void viewOrder(){
-        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(2);
+        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(3);
         net.breezeware.order.entity.Order order=viewOrderDto.getOrder();
         System.out.println("Id : "+order.getId()+
                 ", User Id : "+order.getUserId()+
@@ -75,15 +75,15 @@ class OrderManagementServiceImplTest {
     @Order(4)
     void updateOrderItem(){
         List<OrderUpdateDto> orderUpdateDtos=new ArrayList<>();
-        orderUpdateDtos.add(new OrderUpdateDto(2,3,10));
-        orderUpdateDtos.add(new OrderUpdateDto(2,4,5));
+        orderUpdateDtos.add(new OrderUpdateDto(3,5,10));
+        orderUpdateDtos.add(new OrderUpdateDto(3,6,5));
         assertEquals(orderUpdateDtos.size(),orderManagementService.updateOrderItem(orderUpdateDtos));
     }
     @Test
     @Order(5)
     void placeOrder(){
         PlaceOrderDto placeOrderDto=new PlaceOrderDto("chand2ram@gmail.com","9677963066","Ganapathy");
-        assertEquals(1,orderManagementService.placeOrder(2,placeOrderDto));
+        assertEquals(1,orderManagementService.placeOrder(3,placeOrderDto));
     }
 
     @Test
@@ -94,9 +94,9 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(7)
     void retrieveListOfActiveOrders(){
-        List<ActiveOrderDto> activeOrderDtos=orderManagementService.retrieveListOfActiveOrders();
+        List<RetrieveOrderDto> retrieveOrderDtos =orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_PLACED.toString());
         for (var activeOrderDto:
-             activeOrderDtos) {
+                retrieveOrderDtos) {
             net.breezeware.order.entity.Order order=activeOrderDto.getOrder();
             System.out.println("Id : "+order.getId()+
                     ", User Id : "+order.getUserId()+
@@ -117,5 +117,155 @@ class OrderManagementServiceImplTest {
                         ", Cost : "+foodItemDto.getFoodCost());
             }
         }
+        assertEquals(1, retrieveOrderDtos.size());
+    }
+    @Test
+    @Order(8)
+    void retrieveListOfReceivedOrders(){
+        List<RetrieveOrderDto> retrieveOrderDtos =orderManagementService.retrieveListOfActiveOrders(OrderStatus.RECEIVED_ORDER.toString());
+        for (var activeOrderDto:
+                retrieveOrderDtos) {
+            net.breezeware.order.entity.Order order=activeOrderDto.getOrder();
+            System.out.println("Id : "+order.getId()+
+                    ", User Id : "+order.getUserId()+
+                    ", Total Cost : "+order.getTotalCost()+
+                    ", Email : "+order.getEmail()+
+                    ", Phone Number : "+order.getPhoneNumber()+
+                    ", Order Location : "+order.getOrderLocation()+
+                    ", Order Status : "+order.getStatus()+
+                    ", Ordered On : "+order.getOrderOn().substring(0,10)+" "+order.getOrderOn().substring(11,16)+
+                    ", Delivery On : "+order.getDeliveryOn().substring(0,10)+" "+order.getDeliveryOn().substring(11,16));
+            List<DisplayFoodItemDto> displayFoodItemDtos=activeOrderDto.getFoodItems();
+            for (var displayFoodItemDto:
+                    displayFoodItemDtos) {
+                FoodItemDto foodItemDto=displayFoodItemDto.getFoodItemDto();
+                System.out.println("    Food Id : "+foodItemDto.getFoodItemId()+
+                        ", Food Name : "+displayFoodItemDto.getFoodItemName()+
+                        ", Food Quantity : "+foodItemDto.getFoodItemQuantity()+
+                        ", Cost : "+foodItemDto.getFoodCost());
+            }
+        }
+        assertEquals(2, retrieveOrderDtos.size());
+    }
+    @Test
+    @Order(9)
+    void changeStatusToWaitingForDelivery(){
+        assertEquals(1,orderManagementService.changeOrderStatus(2,OrderStatus.ORDER_PREPARED_WAITING_FOR_DELIVERY.toString()));
+    }
+    @Test
+    @Order(10)
+    void changeStatusToPendingDelivery(){
+        assertEquals(1,orderManagementService.changeOrderStatus(2,OrderStatus.PENDING_DELIVERY.toString()));
+    }
+    @Test
+    @Order(11)
+    void changeStatusToOrderDelivered(){
+        assertEquals(1,orderManagementService.changeOrderStatus(2,OrderStatus.ORDER_DELIVERED.toString()));
+    }
+    @Test
+    @Order(12)
+    void retrieveListOfCancelledOrders(){
+        List<RetrieveOrderDto> retrieveOrderDtos =orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_CANCELLED.toString());
+        for (var retrieveOrderDto:
+                retrieveOrderDtos) {
+            net.breezeware.order.entity.Order order=retrieveOrderDto.getOrder();
+            System.out.println("Id : "+order.getId()+
+                    ", User Id : "+order.getUserId()+
+                    ", Total Cost : "+order.getTotalCost()+
+                    ", Email : "+order.getEmail()+
+                    ", Phone Number : "+order.getPhoneNumber()+
+                    ", Order Location : "+order.getOrderLocation()+
+                    ", Order Status : "+order.getStatus()+
+                    ", Ordered On : "+order.getOrderOn().substring(0,10)+" "+order.getOrderOn().substring(11,16)+
+                    ", Delivery On : "+order.getDeliveryOn().substring(0,10)+" "+order.getDeliveryOn().substring(11,16));
+            List<DisplayFoodItemDto> displayFoodItemDtos=retrieveOrderDto.getFoodItems();
+            for (var displayFoodItemDto:
+                    displayFoodItemDtos) {
+                FoodItemDto foodItemDto=displayFoodItemDto.getFoodItemDto();
+                System.out.println("    Food Id : "+foodItemDto.getFoodItemId()+
+                        ", Food Name : "+displayFoodItemDto.getFoodItemName()+
+                        ", Food Quantity : "+foodItemDto.getFoodItemQuantity()+
+                        ", Cost : "+foodItemDto.getFoodCost());
+            }
+        }
+        assertEquals(1, retrieveOrderDtos.size());
+    }
+    @Test
+    @Order(13)
+    void viewCancelledOrderDetail(){
+        RetrieveOrderDto retrieveOrderDto = orderManagementService.displayOrderDetail(1, OrderStatus.ORDER_CANCELLED.toString());
+        net.breezeware.order.entity.Order order=retrieveOrderDto.getOrder();
+        System.out.println("Id : "+order.getId()+
+                ", User Id : "+order.getUserId()+
+                ", Total Cost : "+order.getTotalCost()+
+                ", Email : "+order.getEmail()+
+                ", Phone Number : "+order.getPhoneNumber()+
+                ", Order Location : "+order.getOrderLocation()+
+                ", Order Status : "+order.getStatus()+
+                ", Ordered On : "+order.getOrderOn().substring(0,10)+" "+order.getOrderOn().substring(11,16)+
+                ", Delivery On : "+order.getDeliveryOn().substring(0,10)+" "+order.getDeliveryOn().substring(11,16));
+        List<DisplayFoodItemDto> displayFoodItemDtos=retrieveOrderDto.getFoodItems();
+        for (var displayFoodItemDto:
+                displayFoodItemDtos) {
+            FoodItemDto foodItemDto=displayFoodItemDto.getFoodItemDto();
+            System.out.println("    Food Id : "+foodItemDto.getFoodItemId()+
+                    ", Food Name : "+displayFoodItemDto.getFoodItemName()+
+                    ", Food Quantity : "+foodItemDto.getFoodItemQuantity()+
+                    ", Cost : "+foodItemDto.getFoodCost());
+        }
+        assertNotEquals(null,retrieveOrderDto);
+    }
+    @Test
+    @Order(14)
+    void retrieveListOfCompletedOrders(){
+        List<RetrieveOrderDto> retrieveOrderDtos =orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_DELIVERED.toString());
+        for (var retrieveOrderDto:
+                retrieveOrderDtos) {
+            net.breezeware.order.entity.Order order=retrieveOrderDto.getOrder();
+            System.out.println("Id : "+order.getId()+
+                    ", User Id : "+order.getUserId()+
+                    ", Total Cost : "+order.getTotalCost()+
+                    ", Email : "+order.getEmail()+
+                    ", Phone Number : "+order.getPhoneNumber()+
+                    ", Order Location : "+order.getOrderLocation()+
+                    ", Order Status : "+order.getStatus()+
+                    ", Ordered On : "+order.getOrderOn().substring(0,10)+" "+order.getOrderOn().substring(11,16)+
+                    ", Delivery On : "+order.getDeliveryOn().substring(0,10)+" "+order.getDeliveryOn().substring(11,16));
+            List<DisplayFoodItemDto> displayFoodItemDtos=retrieveOrderDto.getFoodItems();
+            for (var displayFoodItemDto:
+                    displayFoodItemDtos) {
+                FoodItemDto foodItemDto=displayFoodItemDto.getFoodItemDto();
+                System.out.println("    Food Id : "+foodItemDto.getFoodItemId()+
+                        ", Food Name : "+displayFoodItemDto.getFoodItemName()+
+                        ", Food Quantity : "+foodItemDto.getFoodItemQuantity()+
+                        ", Cost : "+foodItemDto.getFoodCost());
+            }
+        }
+        assertEquals(1, retrieveOrderDtos.size());
+    }
+    @Test
+    @Order(15)
+    void viewCompletedOrder(){
+        RetrieveOrderDto retrieveOrderDto = orderManagementService.displayOrderDetail(2, OrderStatus.ORDER_DELIVERED.toString());
+        net.breezeware.order.entity.Order order=retrieveOrderDto.getOrder();
+        System.out.println("Id : "+order.getId()+
+                ", User Id : "+order.getUserId()+
+                ", Total Cost : "+order.getTotalCost()+
+                ", Email : "+order.getEmail()+
+                ", Phone Number : "+order.getPhoneNumber()+
+                ", Order Location : "+order.getOrderLocation()+
+                ", Order Status : "+order.getStatus()+
+                ", Ordered On : "+order.getOrderOn().substring(0,10)+" "+order.getOrderOn().substring(11,16)+
+                ", Delivery On : "+order.getDeliveryOn().substring(0,10)+" "+order.getDeliveryOn().substring(11,16));
+        List<DisplayFoodItemDto> displayFoodItemDtos=retrieveOrderDto.getFoodItems();
+        for (var displayFoodItemDto:
+                displayFoodItemDtos) {
+            FoodItemDto foodItemDto=displayFoodItemDto.getFoodItemDto();
+            System.out.println("    Food Id : "+foodItemDto.getFoodItemId()+
+                    ", Food Name : "+displayFoodItemDto.getFoodItemName()+
+                    ", Food Quantity : "+foodItemDto.getFoodItemQuantity()+
+                    ", Cost : "+foodItemDto.getFoodCost());
+        }
+        assertNotEquals(null,retrieveOrderDto);
     }
 }

@@ -81,7 +81,13 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         assert !orderCancelDtos.isEmpty();
         return orderListRepository.changeFoodItemQuantity(orderCancelDtos);
     }
-    public List<ActiveOrderDto> retrieveListOfActiveOrders(){
-        return orderProcessAndDeliveryRepository.retrieveListOfActiveOrders();
+    public List<RetrieveOrderDto> retrieveListOfActiveOrders(String status){
+        return orderProcessAndDeliveryRepository.retrieveListOfOrdersByStatus(status);
+    }
+    public int changeOrderStatus(int id,String status){
+        return  orderProcessAndDeliveryRepository.changeOrderStatus(id,status);
+    }
+    public RetrieveOrderDto displayOrderDetail(int id,String status){
+        return orderProcessAndDeliveryRepository.displayOrderDetail(id,status);
     }
 }

@@ -4,15 +4,13 @@ import net.breezeware.order.entity.Order;
 
 import java.util.List;
 
-public class ActiveOrderDto {
+public class RetrieveOrderDto {
     private Order order;
     private List<DisplayFoodItemDto> foodItems;
-
-    public ActiveOrderDto(Order order, List<DisplayFoodItemDto> foodItems) {
+    public RetrieveOrderDto(Order order, List<DisplayFoodItemDto> foodItems) {
         this.order = order;
         this.foodItems = foodItems;
     }
-
     public Order getOrder() {
         return order;
     }
@@ -28,4 +26,5 @@ public class ActiveOrderDto {
     public void setFoodItems(List<DisplayFoodItemDto> foodItems) {
         this.foodItems = foodItems;
     }
+
 }

@@ -12,5 +12,7 @@ public interface OrderManagementService {
     int updateOrderItem(List<OrderUpdateDto> orderUpdateDtos);
     int placeOrder(int orderId,PlaceOrderDto placeOrderDto);
     int cancelOrder(int orderId);
-    List<ActiveOrderDto> retrieveListOfActiveOrders();
+    List<RetrieveOrderDto> retrieveListOfActiveOrders(String status);
+    int changeOrderStatus(int id,String status);
+    RetrieveOrderDto displayOrderDetail(int id,String status);
 }
