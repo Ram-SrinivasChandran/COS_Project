@@ -4,6 +4,8 @@ import net.breezeware.DataBaseConnection;
 import net.breezeware.food.entity.FoodItem;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Repository class for managing food items in the database.
@@ -68,17 +70,19 @@ public class FoodItemRepository {
     /**
      * Retrieves all food items from the database and prints their details.
      */
-    public void retrieveFoodItems() {
+    public List<FoodItem> retrieveFoodItems() {
+        List<FoodItem> foodItems=new ArrayList<>();
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_NAME);
             while (resultSet.next()) {
-                System.out.println("Id: " + resultSet.getInt("id") +
-                        ", Name: " + resultSet.getString("name") +
-                        ", Cost: " + resultSet.getDouble("cost") +
-                        ", Total Quantity: " + resultSet.getInt("quantity"));
+                int id = resultSet.getInt("id");
+                String name=resultSet.getString("name");
+                double cost=resultSet.getDouble("cost");
+                int quantity=resultSet.getInt("quantity");
+                foodItems.add(new FoodItem(id,name,cost,quantity));
             }
             resultSet.close();
             statement.close();
@@ -86,6 +90,7 @@ public class FoodItemRepository {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return foodItems;
     }
 
     /**
@@ -118,17 +123,19 @@ public class FoodItemRepository {
      *
      * @param id The unique identifier of the food item to delete.
      */
-    public void deleteFoodItem(int id) {
+    public int deleteFoodItem(int id) {
+        int recordsChanged=0;
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM " + TABLE_NAME + " WHERE id=" + id);
-            statement.execute();
+            recordsChanged = statement.executeUpdate();
             statement.close();
             connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return recordsChanged;
     }
 }

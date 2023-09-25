@@ -33,7 +33,7 @@ public interface FoodManagementService {
     /**
      * Retrieve a list of food items.
      */
-    void retrieveFoodItems();
+    List<FoodItem> retrieveFoodItems();
 
     /**
      * Update a food item's information.
@@ -48,7 +48,7 @@ public interface FoodManagementService {
      *
      * @param id The ID of the food item to delete.
      */
-    void deleteFoodItem(int id);
+    int deleteFoodItem(int id);
 
     /**
      * Add a new food menu along with its associated food items.
@@ -70,14 +70,14 @@ public interface FoodManagementService {
     /**
      * Retrieve a list of food menus.
      */
-    void retrieveFoodMenu();
+    List<FoodMenuDto> retrieveFoodMenu();
 
     /**
      * Update a food menu and its associated food items.
      *
      * @param foodMenuDto The DTO containing the updated food menu and food items.
      */
-    void updateFoodMenu(FoodMenuDto foodMenuDto);
+    int updateFoodMenu(FoodMenuDto foodMenuDto);
 
     /**
      * Delete a food menu by its details.

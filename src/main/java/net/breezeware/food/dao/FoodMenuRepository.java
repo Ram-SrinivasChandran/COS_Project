@@ -53,7 +53,7 @@ public class FoodMenuRepository {
     /**
      * Retrieves all food menus from the database along with their associated food items.
      */
-    public void retrieveFoodMenu() {
+    public List<FoodMenuDto> retrieveFoodMenu() {
         List<FoodMenu> foodMenus = new ArrayList<>();
         List<FoodMenuDto> foodMenuDtoList = new ArrayList<>();
         try {
@@ -104,24 +104,10 @@ public class FoodMenuRepository {
                 foodMenuDtoList.add(new FoodMenuDto(foodMenu, foodItems));
             }
             connection.close();
-
-            for (var foodMenuDto : foodMenuDtoList) {
-                FoodMenu foodMenu = foodMenuDto.getFoodMenu();
-                System.out.println("Id : " + foodMenu.getId() +
-                        ", Name : " + foodMenu.getName() +
-                        ", Type : " + foodMenu.getType() +
-                        ", Available On : " + foodMenu.getAvailabilityOn());
-                List<FoodItem> foodItems = foodMenuDto.getFoodItems();
-                for (var foodItem : foodItems) {
-                    System.out.println("     Id : " + foodItem.getId() +
-                            ", Name : " + foodItem.getName() +
-                            ", Cost : " + foodItem.getCost() +
-                            ", Quantity : " + foodItem.getQuantity());
-                }
-            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return foodMenuDtoList;
     }
 
     /**

@@ -11,8 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FoodManagementServiceImplTest {
@@ -43,7 +42,15 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(3)
     void retrieveFoodItems(){
-        foodManagementService.retrieveFoodItems();
+        List<FoodItem> foodItems=foodManagementService.retrieveFoodItems();
+        for (var foodItem:
+             foodItems) {
+            System.out.println("Id: " + foodItem.getId() +
+                    ", Name: " + foodItem.getName() +
+                    ", Cost: " + foodItem.getCost() +
+                    ", Total Quantity: " + foodItem.getQuantity());
+        }
+        assertEquals(21,foodItems.size());
     }
     /**
      * Test the 'updateFoodItem' method.
@@ -60,7 +67,7 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(5)
     void deleteFoodItem(){
-        foodManagementService.deleteFoodItem(1);
+        assertEquals(1,foodManagementService.deleteFoodItem(1));
     }
     /**
      * Test the 'addFoodMenu' method.
@@ -97,7 +104,22 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(7)
     void retrieveFoodMenu(){
-        foodManagementService.retrieveFoodMenu();
+        List<FoodMenuDto> foodMenuDtoList=foodManagementService.retrieveFoodMenu();
+        for (var foodMenuDto : foodMenuDtoList) {
+            FoodMenu foodMenu = foodMenuDto.getFoodMenu();
+            System.out.println("Id : " + foodMenu.getId() +
+                    ", Name : " + foodMenu.getName() +
+                    ", Type : " + foodMenu.getType() +
+                    ", Available On : " + foodMenu.getAvailabilityOn());
+            List<FoodItem> foodItems = foodMenuDto.getFoodItems();
+            for (var foodItem : foodItems) {
+                System.out.println("     Id : " + foodItem.getId() +
+                        ", Name : " + foodItem.getName() +
+                        ", Cost : " + foodItem.getCost() +
+                        ", Quantity : " + foodItem.getQuantity());
+            }
+        }
+        assertEquals(21,foodMenuDtoList.size());
     }
     /**
      * Test the 'updateMenu' method.
@@ -110,7 +132,7 @@ class FoodManagementServiceImplTest {
         foodItems.add(new FoodItem(2,"Dosa",30,100));
         FoodMenu foodMenu=new FoodMenu(1,"Breakfast","Veg","Monday");
         FoodMenuDto foodMenuDto=new FoodMenuDto(foodMenu,foodItems);
-        foodManagementService.updateFoodMenu(foodMenuDto);
+        assertEquals(1,foodManagementService.updateFoodMenu(foodMenuDto));
     }
     /**
      * Test the 'deleteFoodMenu' method.
