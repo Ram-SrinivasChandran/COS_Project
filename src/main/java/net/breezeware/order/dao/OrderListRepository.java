@@ -1,6 +1,7 @@
 package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
+import net.breezeware.food.entity.FoodItem;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.dto.OrderUpdateDto;
 import net.breezeware.order.dto.OrderViewResponseDto;
@@ -64,7 +65,8 @@ public class OrderListRepository {
             System.out.println(e.getMessage());
         }
     }
-    public void updateOrderCost(int orderId){
+    public int updateOrderCost(int orderId){
+        int recordChange=0;
         double totalCost=0;
         try{
             connection =DataBaseConnection.getConnection();
@@ -78,14 +80,16 @@ public class OrderListRepository {
             statement.close();
             PreparedStatement preparedStatement=connection.prepareStatement("UPDATE \"order\" SET total_cost=? WHERE id="+orderId);
             preparedStatement.setDouble(1,totalCost);
-            preparedStatement.execute();
+            recordChange = preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return recordChange;
     }
-    public void updateFoodItemQuantity(List<FoodItemDto>foodItems){
+    public int updateFoodItemQuantity(List<FoodItemDto>foodItems){
+        int foodItemChange=0;
         try{
             connection=DataBaseConnection.getConnection();
             assert connection!=null;
@@ -94,7 +98,8 @@ public class OrderListRepository {
                 if(foodItem.getFoodItemId()>0){
                     PreparedStatement preparedStatement=connection.prepareStatement("UPDATE food_item SET quantity=? WHERE id="+foodItem.getFoodItemId());
                     preparedStatement.setInt(1,foodItem.getTotalQuantity()-foodItem.getFoodItemQuantity());
-                    preparedStatement.execute();
+                    int i = preparedStatement.executeUpdate();
+                    foodItemChange+=i;
                     preparedStatement.close();
                 }
             }
@@ -102,9 +107,11 @@ public class OrderListRepository {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        return foodItemChange;
     }
-    public void viewOrderItems(int orderId){
+    public List<FoodItem> viewOrderItems(int orderId){
         List<OrderViewResponseDto>orderViewResponses=new ArrayList<>();
+        List<FoodItem>foodItems=new ArrayList<>();
         try{
             connection=DataBaseConnection.getConnection();
             assert connection!=null;
@@ -120,10 +127,7 @@ public class OrderListRepository {
                 Statement statement1=connection.createStatement();
                 ResultSet resultSet1=statement1.executeQuery("SELECT * FROM food_item WHERE id="+orderViewResponse.getFoodItemId());
                 if(resultSet1.next()){
-                    System.out.println("Food ID : "+orderViewResponse.getFoodItemId()+
-                            ", Food Name : "+resultSet1.getString("name")+
-                            ", Quantity : "+orderViewResponse.getFoodItemQuantity()+
-                            ", Cost : "+orderViewResponse.getFoodItemCost());
+                    foodItems.add(new FoodItem(orderViewResponse.getFoodItemId(),resultSet1.getString("name"),orderViewResponse.getFoodItemCost(),orderViewResponse.getFoodItemQuantity()));
                 }
                 resultSet1.close();
                 statement1.close();
@@ -132,9 +136,11 @@ public class OrderListRepository {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return foodItems;
     }
-    public void getFoodItemCost(OrderUpdateDto orderUpdateDto){
+    public int getFoodItemCost(OrderUpdateDto orderUpdateDto){
         int quantity=0;
+        int recordChanged=0;
         try{
             connection=DataBaseConnection.getConnection();
             assert connection!=null;
@@ -164,25 +170,28 @@ public class OrderListRepository {
             statement1.close();
             PreparedStatement preparedStatement=connection.prepareStatement("UPDATE food_item SET quantity=? WHERE id="+orderUpdateDto.getFoodItemId());
             preparedStatement.setInt(1,quantity);
-            preparedStatement.execute();
+            recordChanged = preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return recordChanged;
     }
-    public void UpdateOrderItem(OrderUpdateDto updateDate){
+    public int updateOrderItem(OrderUpdateDto updateDate){
+        int recordsChanged=0;
         try{
             connection=DataBaseConnection.getConnection();
             assert connection!=null;
             PreparedStatement preparedStatement=connection.prepareStatement("UPDATE "+ORDER_ITEM_TABLE+" SET quantity=?,cost=? WHERE order_id="+updateDate.getOrderId()+" AND food_item_id="+updateDate.getFoodItemId());
             preparedStatement.setInt(1,updateDate.getNewQuantity());
             preparedStatement.setDouble(2,(updateDate.getCost()*updateDate.getNewQuantity()));
-            preparedStatement.execute();
+            recordsChanged = preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return recordsChanged;
     }
 }

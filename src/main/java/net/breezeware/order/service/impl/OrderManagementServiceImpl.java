@@ -1,12 +1,11 @@
 package net.breezeware.order.service.impl;
 
+import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dao.OrderListRepository;
 import net.breezeware.order.dao.OrderRepository;
-import net.breezeware.order.dto.FoodItemDto;
-import net.breezeware.order.dto.OrderDto;
-import net.breezeware.order.dto.OrderUpdateDto;
-import net.breezeware.order.dto.PlaceOrderDto;
+import net.breezeware.order.dto.*;
+import net.breezeware.order.entity.Order;
 import net.breezeware.order.service.api.OrderManagementService;
 
 import java.util.List;
@@ -15,33 +14,41 @@ import java.util.regex.Pattern;
 public class OrderManagementServiceImpl implements OrderManagementService {
     OrderRepository orderRepository=new OrderRepository();
     OrderListRepository orderListRepository=new OrderListRepository();
-    public void viewFoodMenu(Days day){
-        orderRepository.viewFoodMenu(day);
+    public List<ViewFoodMenuDto> viewFoodMenu(Days day){
+        return orderRepository.viewFoodMenu(day);
     }
-    public void orderInCart(OrderDto orderDto){
+    public int orderInCart(OrderDto orderDto){
         boolean userCheck = orderRepository.userCheck(orderDto.getUserId());
         if(!userCheck){
             System.out.println("You didn't have Access to the Order Section.");
+            return 0;
         }
         else{
             orderRepository.orderInCart(orderDto.getOrderId(),orderDto.getUserId());
             List<FoodItemDto> foodItems = orderListRepository.getFoodItemCost(orderDto.getFoodItems());
             orderListRepository.addFoodOrderItem(orderDto.getOrderId(),foodItems);
             orderListRepository.updateOrderCost(orderDto.getOrderId());
-            orderListRepository.updateFoodItemQuantity(foodItems);
+            return orderListRepository.updateFoodItemQuantity(foodItems);
         }
     }
-    public void viewOrder(int orderId){
-        orderRepository.viewOrder(orderId);
-        orderListRepository.viewOrderItems(orderId);
+    public ViewOrderDto viewOrder(int orderId){
+        Order order = orderRepository.viewOrder(orderId);
+        List<FoodItem> foodItems = orderListRepository.viewOrderItems(orderId);
+        return new ViewOrderDto(order,foodItems);
     }
-    public void updateOrderItem(List<OrderUpdateDto> orderUpdateDtos){
+    public int updateOrderItem(List<OrderUpdateDto> orderUpdateDtos){
+        int recordsChanged=0;
         for (var orderUpdateDto:
              orderUpdateDtos) {
-            orderListRepository.getFoodItemCost(orderUpdateDto);
-            orderListRepository.UpdateOrderItem(orderUpdateDto);
-            orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
+            int foodItemCost = orderListRepository.getFoodItemCost(orderUpdateDto);
+            assert foodItemCost==1;
+            int recordChanged = orderListRepository.updateOrderItem(orderUpdateDto);
+            assert recordChanged==1;
+            int updateOrderCost = orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
+            assert updateOrderCost==1;
+            recordsChanged++;
         }
+        return recordsChanged;
     }
     public int placeOrder(int orderId,PlaceOrderDto placeOrderDto){
         if(validateEmail(placeOrderDto.getEmail()) && validatePhoneNumber(placeOrderDto.getPhoneNumber())){

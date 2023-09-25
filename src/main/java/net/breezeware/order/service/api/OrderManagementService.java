@@ -1,17 +1,14 @@
 package net.breezeware.order.service.api;
 
 import net.breezeware.food.enumeration.Days;
-import net.breezeware.order.dto.FoodItemDto;
-import net.breezeware.order.dto.OrderDto;
-import net.breezeware.order.dto.OrderUpdateDto;
-import net.breezeware.order.dto.PlaceOrderDto;
+import net.breezeware.order.dto.*;
 
 import java.util.List;
 
 public interface OrderManagementService {
-    void viewFoodMenu(Days day);
-    void orderInCart(OrderDto orderDto);
-    void viewOrder(int orderId);
-    void updateOrderItem(List<OrderUpdateDto> orderUpdateDtos);
+    List<ViewFoodMenuDto> viewFoodMenu(Days day);
+    int orderInCart(OrderDto orderDto);
+    ViewOrderDto viewOrder(int orderId);
+    int updateOrderItem(List<OrderUpdateDto> orderUpdateDtos);
     int placeOrder(int orderId,PlaceOrderDto placeOrderDto);
 }

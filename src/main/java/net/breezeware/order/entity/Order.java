@@ -9,7 +9,7 @@ import java.time.Instant;
  */
 public class Order {
     private int id;                 // Unique identifier for the order.
-    private User userId;            // The user who placed the order.
+    private int userId;            // The user who placed the order.
     private double totalCost;       // The total cost of the order.
     private String email;           // Email associated with the order.
     private long phoneNumber;       // Phone number associated with the order.
@@ -18,9 +18,16 @@ public class Order {
     private Instant orderOn;        // The timestamp when the order was placed.
     private Instant deliveryOn;     // The timestamp when the order will be delivered.
 
-    public Order(int id, User userId) {
+    public Order(int id, int userId) {
         this.id = id;
         this.userId = userId;
+    }
+
+    public Order(int id, int userId, double totalCost, String status) {
+        this.id = id;
+        this.userId = userId;
+        this.totalCost = totalCost;
+        this.status = status;
     }
 
     public Order(String email, long phoneNumber, String orderLocation) {
@@ -52,7 +59,7 @@ public class Order {
      *
      * @return The user who placed the order.
      */
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -61,7 +68,7 @@ public class Order {
      *
      * @param userId The user who placed the order.
      */
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
