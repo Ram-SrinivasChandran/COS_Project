@@ -6,10 +6,7 @@ import net.breezeware.order.dto.PlaceOrderDto;
 import net.breezeware.order.enumeration.OrderStatus;
 
 import java.sql.*;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -134,8 +131,8 @@ public class OrderRepository {
             preparedStatement.setString(2, placeOrderDto.getPhoneNumber());
             preparedStatement.setString(3,placeOrderDto.getOrderLocation());
             preparedStatement.setString(4, String.valueOf(OrderStatus.ORDER_PLACED));
-            preparedStatement.setString(5, String.valueOf(LocalTime.now(Clock.systemDefaultZone())));
-            preparedStatement.setString(6, String.valueOf(LocalTime.now(Clock.systemDefaultZone()).plus(Duration.ofHours(1))));
+            preparedStatement.setString(5, String.valueOf(LocalDateTime.now(Clock.systemDefaultZone())));
+            preparedStatement.setString(6, String.valueOf(LocalDateTime.now(Clock.systemDefaultZone()).plus(Duration.ofHours(1))));
             preparedStatement.execute();
             preparedStatement.close();
             connection.close();
