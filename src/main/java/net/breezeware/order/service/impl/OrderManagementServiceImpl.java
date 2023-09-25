@@ -72,4 +72,11 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         Pattern pattern = Pattern.compile(phoneRegex);
         return pattern.matcher(phoneNumber).matches();
     }
+    public int cancelOrder(int orderId){
+        int recordChanged = orderRepository.cancelOrder(orderId);
+        assert recordChanged==1;
+        List<OrderCancelDto> orderCancelDtos = orderListRepository.cancelFoodItemList(orderId);
+        assert !orderCancelDtos.isEmpty();
+        return orderListRepository.changeFoodItemQuantity(orderCancelDtos);
+    }
 }

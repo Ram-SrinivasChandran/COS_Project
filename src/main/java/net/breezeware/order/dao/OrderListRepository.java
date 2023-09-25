@@ -3,6 +3,7 @@ package net.breezeware.order.dao;
 import net.breezeware.DataBaseConnection;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.order.dto.FoodItemDto;
+import net.breezeware.order.dto.OrderCancelDto;
 import net.breezeware.order.dto.OrderUpdateDto;
 import net.breezeware.order.dto.OrderViewResponseDto;
 
@@ -188,6 +189,49 @@ public class OrderListRepository {
             preparedStatement.setDouble(2,(updateDate.getCost()*updateDate.getNewQuantity()));
             recordsChanged = preparedStatement.executeUpdate();
             preparedStatement.close();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return recordsChanged;
+    }
+    public List<OrderCancelDto> cancelFoodItemList(int orderId){
+        List<OrderCancelDto> orderCancelDtos=new ArrayList<>();
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            Statement statement=connection.createStatement();
+            ResultSet resultSet=statement.executeQuery("SELECT * FROM "+ORDER_ITEM_TABLE+" WHERE order_id="+orderId);
+            while (resultSet.next()){
+                orderCancelDtos.add(new OrderCancelDto(resultSet.getInt("food_item_id"),resultSet.getInt("quantity")));
+            }
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return orderCancelDtos;
+    }
+    public int changeFoodItemQuantity(List<OrderCancelDto> orderCancelDtos){
+        int recordsChanged=0;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            for (var orderCancelDto:
+                 orderCancelDtos) {
+                int totalQuantity=0;
+                Statement statement=connection.createStatement();
+                ResultSet resultSet=statement.executeQuery("SELECT * FROM food_item WHERE id="+orderCancelDto.getFoodItemId());
+                if(resultSet.next()){
+                    totalQuantity=resultSet.getInt("quantity");
+                }
+                resultSet.close();
+                statement.close();
+                PreparedStatement preparedStatement=connection.prepareStatement("UPDATE food_item SET quantity=? WHERE id="+orderCancelDto.getFoodItemId());
+                preparedStatement.setInt(1,totalQuantity+orderCancelDto.getQuantity());
+                int recordChanged = preparedStatement.executeUpdate();
+                recordsChanged+=recordChanged;
+                preparedStatement.close();
+            }
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());

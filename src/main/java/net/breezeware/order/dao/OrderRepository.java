@@ -143,5 +143,19 @@ public class OrderRepository {
         }
         return recordsChange;
     }
+    public int cancelOrder(int orderId){
+        int recordChanged=0;
+        try{
+            connection=DataBaseConnection.getConnection();
+            assert connection!=null;
+            PreparedStatement preparedStatement=connection.prepareStatement("UPDATE \""+TABLE_NAME_ORDER+"\" SET status=? WHERE id="+orderId);
+            preparedStatement.setString(1, String.valueOf(OrderStatus.ORDER_CANCELLED));
+            recordChanged = preparedStatement.executeUpdate();
+            connection.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return recordChanged;
+    }
 
 }

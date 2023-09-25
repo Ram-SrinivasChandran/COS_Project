@@ -83,4 +83,10 @@ class OrderManagementServiceImplTest {
         PlaceOrderDto placeOrderDto=new PlaceOrderDto("chand2ram@gmail.com","9677963066","Ganapathy");
         assertEquals(1,orderManagementService.placeOrder(1,placeOrderDto));
     }
+
+    @Test
+    @Order(6)
+    void cancelOrder(){
+        assertEquals(2,orderManagementService.cancelOrder(1));
+    }
 }
