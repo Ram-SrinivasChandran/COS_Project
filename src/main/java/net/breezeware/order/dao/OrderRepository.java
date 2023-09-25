@@ -122,7 +122,8 @@ public class OrderRepository {
         }
     }
 
-    public void placeOrder(int orderId,PlaceOrderDto placeOrderDto){
+    public int placeOrder(int orderId,PlaceOrderDto placeOrderDto){
+        int recordsChange=0;
         try{
             connection=DataBaseConnection.getConnection();
             assert connection!=null;
@@ -131,14 +132,15 @@ public class OrderRepository {
             preparedStatement.setString(2, placeOrderDto.getPhoneNumber());
             preparedStatement.setString(3,placeOrderDto.getOrderLocation());
             preparedStatement.setString(4, String.valueOf(OrderStatus.ORDER_PLACED));
-            preparedStatement.setString(5, String.valueOf(LocalDateTime.now(Clock.systemDefaultZone())));
-            preparedStatement.setString(6, String.valueOf(LocalDateTime.now(Clock.systemDefaultZone()).plus(Duration.ofHours(1))));
-            preparedStatement.execute();
+            preparedStatement.setString(5, String.valueOf(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+            preparedStatement.setString(6, String.valueOf(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime().plus(Duration.ofHours(1))));
+            recordsChange = preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return recordsChange;
     }
 
 }

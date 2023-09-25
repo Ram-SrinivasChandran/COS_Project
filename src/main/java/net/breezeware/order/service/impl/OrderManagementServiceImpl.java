@@ -43,12 +43,13 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
         }
     }
-    public void placeOrder(int orderId,PlaceOrderDto placeOrderDto){
+    public int placeOrder(int orderId,PlaceOrderDto placeOrderDto){
         if(validateEmail(placeOrderDto.getEmail()) && validatePhoneNumber(placeOrderDto.getPhoneNumber())){
-        orderRepository.placeOrder(orderId,placeOrderDto);
+            return orderRepository.placeOrder(orderId, placeOrderDto);
         }
         else{
             System.out.println("Your Email or Phone Number is Not in correct Format");
+            return 0;
         }
     }
     private boolean validateEmail(String email) {

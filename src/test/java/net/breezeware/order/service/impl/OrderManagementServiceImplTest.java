@@ -13,6 +13,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class OrderManagementServiceImplTest {
     OrderManagementService orderManagementService=new OrderManagementServiceImpl();
@@ -47,6 +49,6 @@ class OrderManagementServiceImplTest {
     @Order(5)
     void placeOrder(){
         PlaceOrderDto placeOrderDto=new PlaceOrderDto("chand2ram@gmail.com","9677963066","Ganapathy");
-        orderManagementService.placeOrder(1,placeOrderDto);
+        assertEquals(1,orderManagementService.placeOrder(1,placeOrderDto));
     }
 }
