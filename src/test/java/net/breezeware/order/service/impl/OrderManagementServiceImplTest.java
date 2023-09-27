@@ -134,11 +134,10 @@ class OrderManagementServiceImplTest {
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-            List<DisplayFoodItemDto> displayFoodItemDtos = activeOrderDto.getFoodItems();
-            for (var displayFoodItemDto : displayFoodItemDtos) {
-                FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+            List<FoodItemDto> foodItemDtos = activeOrderDto.getFoodItems();
+            for (var foodItemDto : foodItemDtos) {
                 System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                        ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                        ", Food Name : " + foodItemDto.getFoodItemName() +
                         ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                         ", Cost : " + foodItemDto.getFoodCost());
             }
@@ -165,11 +164,10 @@ class OrderManagementServiceImplTest {
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-            List<DisplayFoodItemDto> displayFoodItemDtos = activeOrderDto.getFoodItems();
-            for (var displayFoodItemDto : displayFoodItemDtos) {
-                FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+            List<FoodItemDto> foodItemDtos = activeOrderDto.getFoodItems();
+            for (var foodItemDto : foodItemDtos) {
                 System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                        ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                        ", Food Name : " + foodItemDto.getFoodItemName() +
                         ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                         ", Cost : " + foodItemDto.getFoodCost());
             }
@@ -226,11 +224,10 @@ class OrderManagementServiceImplTest {
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-            List<DisplayFoodItemDto> displayFoodItemDtos = retrieveOrderDto.getFoodItems();
-            for (var displayFoodItemDto : displayFoodItemDtos) {
-                FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+            List<FoodItemDto> foodItemDtos = retrieveOrderDto.getFoodItems();
+            for (var foodItemDto : foodItemDtos) {
                 System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                        ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                        ", Food Name : " + foodItemDto.getFoodItemName() +
                         ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                         ", Cost : " + foodItemDto.getFoodCost());
             }
@@ -256,11 +253,10 @@ class OrderManagementServiceImplTest {
                 ", Order Status : " + order.getStatus() +
                 ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                 ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-        List<DisplayFoodItemDto> displayFoodItemDtos = orderResponseDto.getFoodItems();
-        for (var displayFoodItemDto : displayFoodItemDtos) {
-            FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+        List<FoodItemDto> foodItemDtos = orderResponseDto.getFoodItems();
+        for (var foodItemDto : foodItemDtos) {
             System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                    ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                    ", Food Name : " + foodItemDto.getFoodItemName() +
                     ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                     ", Cost : " + foodItemDto.getFoodCost());
         }
@@ -286,11 +282,10 @@ class OrderManagementServiceImplTest {
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-            List<DisplayFoodItemDto> displayFoodItemDtos = retrieveOrderDto.getFoodItems();
-            for (var displayFoodItemDto : displayFoodItemDtos) {
-                FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+            List<FoodItemDto> foodItemDtos = retrieveOrderDto.getFoodItems();
+            for (var foodItemDto : foodItemDtos) {
                 System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                        ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                        ", Food Name : " + foodItemDto.getFoodItemName() +
                         ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                         ", Cost : " + foodItemDto.getFoodCost());
             }
@@ -316,11 +311,10 @@ class OrderManagementServiceImplTest {
                 ", Order Status : " + order.getStatus() +
                 ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                 ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-        List<DisplayFoodItemDto> displayFoodItemDtos = orderResponseDto.getFoodItems();
-        for (var displayFoodItemDto : displayFoodItemDtos) {
-            FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
+        List<FoodItemDto> foodItemDtos = orderResponseDto.getFoodItems();
+        for (var foodItemDto : foodItemDtos) {
             System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
-                    ", Food Name : " + displayFoodItemDto.getFoodItemName() +
+                    ", Food Name : " + foodItemDto.getFoodItemName() +
                     ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                     ", Cost : " + foodItemDto.getFoodCost());
         }

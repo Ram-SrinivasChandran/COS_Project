@@ -171,6 +171,7 @@ public class OrderProcessAndDeliveryRepository {
             statement.close();
             List<FoodItemDto> foodItemDtos = new ArrayList<>();
             Statement statement1 = connection.createStatement();
+            assert order != null;
             ResultSet resultSet1 = statement1
                     .executeQuery("SELECT * FROM " + ORDER_ITEM_TABLE + " WHERE order_id=" + order.getId());
             while (resultSet1.next()) {
