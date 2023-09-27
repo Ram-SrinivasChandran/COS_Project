@@ -130,7 +130,7 @@ class FoodManagementServiceImplTest {
         List<FoodItem> foodItems=new ArrayList<>();
         foodItems.add(new FoodItem(1,"Idly",20,200));
         foodItems.add(new FoodItem(2,"Dosa",30,100));
-        FoodMenu foodMenu=new FoodMenu(1,"Breakfast","Veg","Monday");
+        FoodMenu foodMenu=new FoodMenu(2,"Breakfast","Veg","Monday");
         FoodMenuDto foodMenuDto=new FoodMenuDto(foodMenu,foodItems);
         assertEquals(1,foodManagementService.updateFoodMenu(foodMenuDto));
     }

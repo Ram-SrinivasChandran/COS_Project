@@ -3,6 +3,7 @@ package net.breezeware.order.service.api;
 import net.breezeware.food.enumeration.Days;
 import net.breezeware.order.dto.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public interface OrderManagementService {
      * @param orderId The unique identifier of the order to be canceled.
      * @return The number of food items whose quantity was restored.
      */
-    int cancelOrder(int orderId);
+    int cancelOrder(int orderId) throws SQLException;
 
     /**
      * Retrieve a list of orders with a specific status (e.g., "ORDER_PLACED").

@@ -9,6 +9,7 @@ import net.breezeware.order.dto.*;
 import net.breezeware.order.entity.Order;
 import net.breezeware.order.service.api.OrderManagementService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -134,7 +135,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      * @param orderId The ID of the order to cancel.
      * @return The number of items in the order that were canceled.
      */
-    public int cancelOrder(int orderId) {
+    public int cancelOrder(int orderId) throws SQLException {
         int recordChanged = orderRepository.cancelOrder(orderId);
         assert recordChanged == 1;
         List<OrderCancelDto> orderCancelDtos = orderItemRepository.cancelFoodItemList(orderId);

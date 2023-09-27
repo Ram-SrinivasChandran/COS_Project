@@ -201,7 +201,7 @@ public class OrderRepository {
      * @param orderId The ID of the order to be cancelled.
      * @return The number of records changed in the database.
      */
-    public int cancelOrder(int orderId) {
+    public int cancelOrder(int orderId) throws SQLException {
         int recordsChanged = 0;
         try {
             connection = DataBaseConnection.getConnection();
@@ -210,9 +210,12 @@ public class OrderRepository {
                     .prepareStatement("UPDATE \"" + TABLE_NAME_ORDER + "\" SET status=? WHERE id=" + orderId);
             preparedStatement.setString(1, String.valueOf(OrderStatus.ORDER_CANCELLED));
             recordsChanged = preparedStatement.executeUpdate();
-            connection.close();
+            preparedStatement.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }finally {
+            assert connection != null;
+            connection.close();
         }
         return recordsChanged;
     }

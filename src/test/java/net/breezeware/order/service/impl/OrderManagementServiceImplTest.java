@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(3)
     void testViewOrder() {
-        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(3);
+        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(1);
         net.breezeware.order.entity.Order order = viewOrderDto.getOrder();
         System.out.println("Id : " + order.getId() +
                 ", User Id : " + order.getUserId() +
@@ -111,7 +112,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(6)
-    void testCancelOrder() {
+    void testCancelOrder() throws SQLException {
         assertEquals(2, orderManagementService.cancelOrder(1));
     }
 
@@ -142,7 +143,7 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(1, orderResponseDtos.size());
+        assertEquals(2, orderResponseDtos.size());
     }
 
     /**
