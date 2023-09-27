@@ -58,8 +58,10 @@ public class FoodManagementServiceImpl implements FoodManagementService {
      * @return An integer indicating the result of the operation (e.g., success or failure).
      */
     public int updateFoodItem(FoodItem foodItem) {
-        System.out.println("The Food Name is Updated.");
-        return foodItemRepository.updateFoodItem(foodItem);
+        int recordChanged = foodItemRepository.updateFoodItem(foodItem);
+        assert recordChanged!=0;
+        System.out.println("The Food Item is Updated.");
+        return recordChanged;
     }
 
     /**
@@ -68,8 +70,10 @@ public class FoodManagementServiceImpl implements FoodManagementService {
      * @param id The ID of the food item to delete.
      */
     public int deleteFoodItem(int id) {
+        int recordChanged = foodItemRepository.deleteFoodItem(id);
+        assert recordChanged!=0;
         System.out.println("The Food Item with the given ID is Deleted.");
-        return foodItemRepository.deleteFoodItem(id);
+        return recordChanged;
     }
 
     /**
@@ -82,11 +86,11 @@ public class FoodManagementServiceImpl implements FoodManagementService {
         String foodMenuDay = null;
         int foodMenuId = foodMenuRepository.addFoodMenu(foodMenuDto.getFoodMenu());
         if (foodMenuId != 0) {
-            System.out.println("Food Menu is Added.");
             for (var foodItem : foodMenuDto.getFoodItems()) {
                 addFoodItem(foodItem);
             }
             foodMenuDay = addFoodMenuFoodItemMap(foodMenuDto.getFoodItems(), foodMenuId);
+            System.out.println("Food Menu is Added.");
         }
         return foodMenuDay;
     }
@@ -98,7 +102,7 @@ public class FoodManagementServiceImpl implements FoodManagementService {
      * @param foodMenuId  The ID of the food menu.
      * @return The name of the added food menu.
      */
-    public String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId) {
+    private String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId) {
         return foodMenuFoodItemRepository.addFoodMenuFoodItemMap(foodItems, foodMenuId);
     }
 
@@ -115,7 +119,7 @@ public class FoodManagementServiceImpl implements FoodManagementService {
      * @param foodMenuDto The DTO containing the updated food menu and food items.
      */
     public int updateFoodMenu(FoodMenuDto foodMenuDto) {
-        if (foodMenuRepository.checkMenu(foodMenuDto.getFoodMenu())) {
+        if (foodMenuRepository.validateFoodMenu(foodMenuDto.getFoodMenu().getId())) {
             List<FoodItem> foodItems = foodMenuDto.getFoodItems();
             for (var foodItem : foodItems) {
                 updateFoodItem(foodItem);
@@ -130,13 +134,13 @@ public class FoodManagementServiceImpl implements FoodManagementService {
     /**
      * Delete a food menu by its details.
      *
-     * @param foodMenu The food menu object to delete.
+     * @param foodMenuId The food menu object to delete.
      * @return true if the food menu is deleted, false otherwise.
      */
-    public boolean deleteFoodMenu(FoodMenu foodMenu) {
-        if (foodMenuRepository.checkMenu(foodMenu)) {
+    public boolean deleteFoodMenu(int foodMenuId) {
+        if (foodMenuRepository.validateFoodMenu(foodMenuId)) {
             System.out.println("The Food Menu Is Deleted.");
-            return foodMenuRepository.deleteFoodMenu(foodMenu);
+            return foodMenuRepository.deleteFoodMenu(foodMenuId);
         } else {
             System.out.println("There is no menu with the given food item details.");
             return false;

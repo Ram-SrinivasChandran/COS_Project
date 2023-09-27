@@ -32,6 +32,7 @@ public interface FoodManagementService {
 
     /**
      * Retrieve a list of food items.
+     * @return The list of food items.
      */
     List<FoodItem> retrieveFoodItems();
 
@@ -58,14 +59,6 @@ public interface FoodManagementService {
      */
     String addFoodMenu(FoodMenuDto foodMenuDto);
 
-    /**
-     * Add mappings between food items and a food menu.
-     *
-     * @param foodItems   The list of food items to be associated with the menu.
-     * @param foodMenuId  The ID of the food menu.
-     * @return The name of the added food menu.
-     */
-    String addFoodMenuFoodItemMap(List<FoodItem> foodItems, int foodMenuId);
 
     /**
      * Retrieve a list of food menus.
@@ -85,5 +78,5 @@ public interface FoodManagementService {
      * @param foodMenu The food menu object to delete.
      * @return true if the food menu is deleted, false otherwise.
      */
-    boolean deleteFoodMenu(FoodMenu foodMenu);
+    boolean deleteFoodMenu(int foodMenuId);
 }

@@ -13,7 +13,7 @@ public class Order {
     private double totalCost;   // The total cost of the order.
     private String email;       // The email address associated with the order.
     private String phoneNumber; // The phone number associated with the order.
-    private String orderLocation; // The location where the order should be delivered.
+    private String location; // The location where the order should be delivered.
     private String status;      // The status of the order (e.g., pending, delivered).
     private String orderOn;     // The timestamp when the order was placed.
     private String deliveryOn;  // The timestamp when the order was delivered (if applicable).
@@ -42,13 +42,13 @@ public class Order {
      * Constructs an order with detailed information including contact details and timestamps.
      */
     public Order(int id, int userId, double totalCost, String email, String phoneNumber,
-                 String orderLocation, String status, String orderOn, String deliveryOn) {
+                 String location, String status, String orderOn, String deliveryOn) {
         this.id = id;
         this.userId = userId;
         this.totalCost = totalCost;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.orderLocation = orderLocation;
+        this.location = location;
         this.status = status;
         this.orderOn = orderOn;
         this.deliveryOn = deliveryOn;
@@ -129,15 +129,15 @@ public class Order {
     /**
      * Gets the location where the order should be delivered.
      */
-    public String getOrderLocation() {
-        return orderLocation;
+    public String getLocation() {
+        return location;
     }
 
     /**
      * Sets the location where the order should be delivered.
      */
-    public void setOrderLocation(String orderLocation) {
-        this.orderLocation = orderLocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**

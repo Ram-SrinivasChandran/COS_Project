@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The OrderListRepository class provides data access methods for managing order items and their quantities.
  */
-public class OrderListRepository {
+public class OrderItemRepository {
     Connection connection;
     public static final String ORDER_ITEM_TABLE = "order_item";
 

@@ -4,7 +4,7 @@ import net.breezeware.DataBaseConnection;
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.entity.FoodMenu;
 import net.breezeware.food.enumeration.Days;
-import net.breezeware.order.dto.PlaceOrderDto;
+import net.breezeware.order.dto.OrderAddressDto;
 import net.breezeware.order.dto.ViewFoodMenuDto;
 import net.breezeware.order.entity.Order;
 import net.breezeware.order.enumeration.OrderStatus;
@@ -167,10 +167,10 @@ public class OrderRepository {
      * Places an order with the specified details.
      *
      * @param orderId      The ID of the order to be placed.
-     * @param placeOrderDto The PlaceOrderDto object containing order placement details.
+     * @param orderAddressDto The PlaceOrderDto object containing order placement details.
      * @return The number of records changed in the database.
      */
-    public int placeOrder(int orderId, PlaceOrderDto placeOrderDto) {
+    public int placeOrder(int orderId, OrderAddressDto orderAddressDto) {
         int recordsChanged = 0;
         try {
             connection = DataBaseConnection.getConnection();
@@ -178,9 +178,9 @@ public class OrderRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE \"" + TABLE_NAME_ORDER + "\" SET email=?,phone_number=?,order_location=?,status=?,order_on=?,delivery_on=? WHERE id="
                             + orderId);
-            preparedStatement.setString(1, placeOrderDto.getEmail());
-            preparedStatement.setString(2, placeOrderDto.getPhoneNumber());
-            preparedStatement.setString(3, placeOrderDto.getOrderLocation());
+            preparedStatement.setString(1, orderAddressDto.getEmail());
+            preparedStatement.setString(2, orderAddressDto.getPhoneNumber());
+            preparedStatement.setString(3, orderAddressDto.getLocation());
             preparedStatement.setString(4, String.valueOf(OrderStatus.ORDER_PLACED));
             preparedStatement.setString(5,
                     String.valueOf(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()));

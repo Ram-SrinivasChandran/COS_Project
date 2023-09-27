@@ -24,6 +24,7 @@ public class FoodItemDto {
      * The total quantity of the food item.
      */
     private int totalQuantity;
+    private String foodItemName;
 
     /**
      * Constructs a FoodItemDto with the specified food item ID, quantity, and cost.
@@ -119,5 +120,22 @@ public class FoodItemDto {
      */
     public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+    /**
+     * Gets the name of the displayed food item.
+     *
+     * @return The name of the displayed food item.
+     */
+    public String getFoodItemName() {
+        return foodItemName;
+    }
+
+    /**
+     * Sets the name of the displayed food item.
+     *
+     * @param foodItemName The name of the displayed food item to be set.
+     */
+    public void setFoodItemName(String foodItemName) {
+        this.foodItemName = foodItemName;
     }
 }

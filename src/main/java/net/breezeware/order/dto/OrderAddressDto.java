@@ -3,7 +3,7 @@ package net.breezeware.order.dto;
 /**
  * The PlaceOrderDto class represents a data transfer object for placing an order.
  */
-public class PlaceOrderDto {
+public class OrderAddressDto {
 
     /**
      * The email associated with the order.
@@ -18,19 +18,19 @@ public class PlaceOrderDto {
     /**
      * The order location where the order is to be delivered.
      */
-    private String orderLocation;
+    private String location;
 
     /**
      * Constructs a PlaceOrderDto with the specified email, phone number, and order location.
      *
      * @param email         The email associated with the order.
      * @param phoneNumber   The phone number associated with the order.
-     * @param orderLocation The order location where the order is to be delivered.
+     * @param location The order location where the order is to be delivered.
      */
-    public PlaceOrderDto(String email, String phoneNumber, String orderLocation) {
+    public OrderAddressDto(String email, String phoneNumber, String location) {
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.orderLocation = orderLocation;
+        this.location = location;
     }
 
     /**
@@ -74,16 +74,16 @@ public class PlaceOrderDto {
      *
      * @return The order location.
      */
-    public String getOrderLocation() {
-        return orderLocation;
+    public String getLocation() {
+        return location;
     }
 
     /**
      * Sets the order location where the order is to be delivered.
      *
-     * @param orderLocation The order location to be set.
+     * @param location The order location to be set.
      */
-    public void setOrderLocation(String orderLocation) {
-        this.orderLocation = orderLocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

@@ -18,10 +18,10 @@ public interface UserService {
     /**
      * Authenticate a user by their username and password.
      *
-     * @param userName The username of the user.
+     * @param username The username of the user.
      * @param password The user's password.
      * @return The name of the authenticated user or null if authentication fails.
      * @throws SQLException if there is an issue with database operations.
      */
-    String loginUser(String userName, String password) throws SQLException;
+    String loginUser(String username, String password) throws SQLException;
 }

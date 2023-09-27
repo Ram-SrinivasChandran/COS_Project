@@ -1,10 +1,10 @@
 package net.breezeware.order.entity;
 
 /**
- * The `OrderList` class represents a list of items included in an order with
- * details such as item ID, quantity, and cost.
+ * The `OrderItem` class represents a list of items included in an order with
+ * details such as food item ID, quantity, and cost.
  */
-public class OrderList {
+public class OrderItem {
 
     // Fields (Attributes)
     private int id;          // The unique identifier for the order list item.
@@ -22,7 +22,7 @@ public class OrderList {
      * @param quantity   The quantity of the food item in the order.
      * @param cost       The cost of the food item.
      */
-    public OrderList(int orderId, int foodItemId, int quantity, double cost) {
+    public OrderItem(int orderId, int foodItemId, int quantity, double cost) {
         this.orderId = orderId;
         this.foodItemId = foodItemId;
         this.quantity = quantity;

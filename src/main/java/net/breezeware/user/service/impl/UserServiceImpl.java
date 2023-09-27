@@ -24,13 +24,13 @@ public class UserServiceImpl implements UserService {
     /**
      * Authenticate a user by their username and password.
      *
-     * @param userName The username of the user.
+     * @param username The username of the user.
      * @param password The user's password.
      * @return The name of the authenticated user or null if authentication fails.
      * @throws SQLException if there is an issue with database operations.
      */
-    public String loginUser(String userName, String password) throws SQLException {
-        ResultSet resultSet= userRepository.loginUser(userName,password);
+    public String loginUser(String username, String password) throws SQLException {
+        ResultSet resultSet= userRepository.login(username,password);
         if(resultSet!=null){
             return resultSet.getString("name");
         }

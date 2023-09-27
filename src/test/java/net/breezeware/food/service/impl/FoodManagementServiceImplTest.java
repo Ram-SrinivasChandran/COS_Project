@@ -21,7 +21,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(1)
-    void addFoodItem() {
+    void testAddFoodItem() {
         FoodItem foodItem = new FoodItem("Idly",10,2);
         assertEquals(1,foodManagementService.addFoodItem(foodItem));
     }
@@ -32,7 +32,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(2)
-    void retrieveFoodItem() throws SQLException {
+    void testRetrieveFoodItem() throws SQLException {
         String actual = foodManagementService.retrieveFoodItem(1);
         assertEquals("Idly",actual);
     }
@@ -41,7 +41,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(3)
-    void retrieveFoodItems(){
+    void testRetrieveFoodItems(){
         List<FoodItem> foodItems=foodManagementService.retrieveFoodItems();
         for (var foodItem:
              foodItems) {
@@ -57,7 +57,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(4)
-    void updateFoodItem(){
+    void testUpdateFoodItem(){
         FoodItem foodItem = new FoodItem(1,"Dosa",20,5);
         assertEquals(1,foodManagementService.updateFoodItem(foodItem));
     }
@@ -66,7 +66,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(5)
-    void deleteFoodItem(){
+    void testDeleteFoodItem(){
         assertEquals(1,foodManagementService.deleteFoodItem(1));
     }
     /**
@@ -74,7 +74,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(6)
-    void addFoodMenu(){
+    void testAddFoodMenu(){
         // Test adding a breakfast menu
 //        List<FoodItem> foodItems=new ArrayList<>();
 //        foodItems.add(new FoodItem("Idly",10,20));
@@ -103,7 +103,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(7)
-    void retrieveFoodMenu(){
+    void testRetrieveFoodMenu(){
         List<FoodMenuDto> foodMenuDtoList=foodManagementService.retrieveFoodMenu();
         for (var foodMenuDto : foodMenuDtoList) {
             FoodMenu foodMenu = foodMenuDto.getFoodMenu();
@@ -126,7 +126,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(8)
-    void updateMenu(){
+    void testUpdateMenu(){
         List<FoodItem> foodItems=new ArrayList<>();
         foodItems.add(new FoodItem(1,"Idly",20,200));
         foodItems.add(new FoodItem(2,"Dosa",30,100));
@@ -139,7 +139,7 @@ class FoodManagementServiceImplTest {
      */
     @Test
     @Order(9)
-    void deleteFoodMenu(){
-        assertTrue(foodManagementService.deleteFoodMenu(new FoodMenu(1,"Breakfast","Veg","Monday")));
+    void testDeleteFoodMenu(){
+        assertTrue(foodManagementService.deleteFoodMenu(1));
     }
 }

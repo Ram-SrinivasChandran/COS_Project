@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * The RetrieveOrderDto class represents a data transfer object for retrieving order information along with its associated food items.
  */
-public class RetrieveOrderDto {
+public class OrderResponseDto {
 
     /**
      * The order associated with the DTO.
@@ -17,7 +17,7 @@ public class RetrieveOrderDto {
     /**
      * The list of food items associated with the order.
      */
-    private List<DisplayFoodItemDto> foodItems;
+    private List<FoodItemDto> foodItems;
 
     /**
      * Constructs a RetrieveOrderDto with the specified order and list of food items.
@@ -25,7 +25,7 @@ public class RetrieveOrderDto {
      * @param order      The order to be retrieved.
      * @param foodItems  The list of food items associated with the order.
      */
-    public RetrieveOrderDto(Order order, List<DisplayFoodItemDto> foodItems) {
+    public OrderResponseDto(Order order, List<FoodItemDto> foodItems) {
         this.order = order;
         this.foodItems = foodItems;
     }
@@ -53,7 +53,7 @@ public class RetrieveOrderDto {
      *
      * @return The list of food items.
      */
-    public List<DisplayFoodItemDto> getFoodItems() {
+    public List<FoodItemDto> getFoodItems() {
         return foodItems;
     }
 
@@ -62,7 +62,7 @@ public class RetrieveOrderDto {
      *
      * @param foodItems The list of food items to be set.
      */
-    public void setFoodItems(List<DisplayFoodItemDto> foodItems) {
+    public void setFoodItems(List<FoodItemDto> foodItems) {
         this.foodItems = foodItems;
     }
 }

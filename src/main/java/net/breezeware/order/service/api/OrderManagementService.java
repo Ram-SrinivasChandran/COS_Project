@@ -46,10 +46,10 @@ public interface OrderManagementService {
      * Place an order with user contact information such as email and phone number.
      *
      * @param orderId        The unique identifier of the order.
-     * @param placeOrderDto  The PlaceOrderDto containing user contact information.
+     * @param orderAddressDto  The PlaceOrderDto containing user contact information.
      * @return 1 if the order is successfully placed, 0 otherwise.
      */
-    int placeOrder(int orderId, PlaceOrderDto placeOrderDto);
+    int placeOrder(int orderId, OrderAddressDto orderAddressDto);
 
     /**
      * Cancel a specific order and restore the quantity of food items.
@@ -65,7 +65,7 @@ public interface OrderManagementService {
      * @param status The status of orders to be retrieved.
      * @return A list of RetrieveOrderDto objects containing order details.
      */
-    List<RetrieveOrderDto> retrieveListOfActiveOrders(String status);
+    List<OrderResponseDto> retrieveOrdersByStatus(String status);
 
     /**
      * Change the status of a specific order.
@@ -74,7 +74,7 @@ public interface OrderManagementService {
      * @param status The new status to be set for the order.
      * @return 1 if the order status is successfully updated, 0 otherwise.
      */
-    int changeOrderStatus(int id, String status);
+    int updateOrderStatus(int id, String status);
 
     /**
      * Display detailed information about a specific order with a given status.
@@ -83,5 +83,5 @@ public interface OrderManagementService {
      * @param status The status of the order to be displayed.
      * @return A RetrieveOrderDto object containing detailed order information.
      */
-    RetrieveOrderDto displayOrderDetail(int id, String status);
+    OrderResponseDto retrieveOrderByStatus(int id, String status);
 }

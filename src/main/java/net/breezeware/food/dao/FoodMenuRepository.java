@@ -113,17 +113,17 @@ public class FoodMenuRepository {
     /**
      * Checks if a food menu exists in the database.
      *
-     * @param foodMenu The food menu to check.
+     * @param foodMenuId The food menu to check.
      * @return True if the food menu exists, otherwise false.
      */
-    public boolean checkMenu(FoodMenu foodMenu) {
+    public boolean validateFoodMenu(int foodMenuId) {
         boolean isMenuAvailable = false;
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + TABLE_NAME + " WHERE id = " + foodMenu.getId());
+                    "SELECT * FROM " + TABLE_NAME + " WHERE id = " + foodMenuId);
             if (resultSet.next()) {
                 isMenuAvailable = true;
             }
@@ -139,27 +139,27 @@ public class FoodMenuRepository {
     /**
      * Deletes a food menu and its associated food items from the database.
      *
-     * @param foodMenu The food menu to delete.
+     * @param foodMenuId The food menu to delete.
      * @return True if the food menu was successfully deleted, otherwise false.
      */
-    public boolean deleteFoodMenu(FoodMenu foodMenu) {
+    public boolean deleteFoodMenu(int foodMenuId) {
         boolean isMenuAvailable = true;
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             PreparedStatement statement = connection.prepareStatement(
-                    "DELETE FROM food_menu_food_item_map WHERE food_menu_id = " + foodMenu.getId());
+                    "DELETE FROM food_menu_food_item_map WHERE food_menu_id = " + foodMenuId);
             statement.execute();
             statement.close();
 
             PreparedStatement statement1 = connection.prepareStatement(
-                    "DELETE FROM " + TABLE_NAME + " WHERE id = " + foodMenu.getId());
+                    "DELETE FROM " + TABLE_NAME + " WHERE id = " + foodMenuId);
             statement1.execute();
             statement1.close();
 
             Statement statement2 = connection.createStatement();
             ResultSet resultSet = statement2.executeQuery(
-                    "SELECT * FROM " + TABLE_NAME + " WHERE id = " + foodMenu.getId());
+                    "SELECT * FROM " + TABLE_NAME + " WHERE id = " + foodMenuId);
             if (resultSet.next()) {
                 isMenuAvailable = false;
             }

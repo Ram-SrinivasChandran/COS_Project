@@ -29,7 +29,7 @@ public class UserRepository {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " VALUES (?,?,?,?,?)");
             statement.setInt(1, user.getId());
             statement.setString(2, user.getName());
-            statement.setString(3, user.getUserName());
+            statement.setString(3, user.getUsername());
             statement.setString(4, user.getPassword());
             statement.setString(5, user.getRole());
             recordsChanged = statement.executeUpdate();
@@ -45,20 +45,20 @@ public class UserRepository {
     /**
      * Authenticate a user by their username and password.
      *
-     * @param userName The username of the user.
+     * @param username The username of the user.
      * @param password The user's password.
      * @return A ResultSet containing user information if authentication is successful, or null otherwise.
      */
-    public ResultSet loginUser(String userName, String password) {
+    public ResultSet login(String username, String password) {
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
             Statement statement = connection.createStatement();
-            return statement.executeQuery("SELECT * FROM " + TABLE_NAME + " WHERE user_name= '" + userName + "' AND password= '" + password + "'");
+            return statement.executeQuery("SELECT * FROM " + TABLE_NAME + " WHERE user_name= '" + username + "' AND password= '" + password + "'");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            System.out.println("Username or password is incorrect.");
         }
-        System.out.println("Username or password is incorrect.");
         return null;
     }
 }

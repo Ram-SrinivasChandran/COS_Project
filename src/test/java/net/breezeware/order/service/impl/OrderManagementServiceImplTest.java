@@ -29,7 +29,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(1)
-    void viewFoodMenu() {
+    void testViewFoodMenu() {
         Days day = Days.TUESDAY;
         List<ViewFoodMenuDto> viewFoodMenuDtos = orderManagementService.viewFoodMenu(day);
         for (var viewFoodMenu : viewFoodMenuDtos) {
@@ -54,7 +54,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(2)
-    void orderInCart() {
+    void testOrderInCart() {
         List<FoodItemDto> foodItems = new ArrayList<>();
         foodItems.add(new FoodItemDto(5, 5));
         foodItems.add(new FoodItemDto(6, 5));
@@ -66,7 +66,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(3)
-    void viewOrder() {
+    void testViewOrder() {
         ViewOrderDto viewOrderDto = orderManagementService.viewOrder(3);
         net.breezeware.order.entity.Order order = viewOrderDto.getOrder();
         System.out.println("Id : " + order.getId() +
@@ -89,7 +89,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(4)
-    void updateOrderItem() {
+    void testUpdateOrderItem() {
         List<OrderUpdateDto> orderUpdateDtos = new ArrayList<>();
         orderUpdateDtos.add(new OrderUpdateDto(3, 5, 10));
         orderUpdateDtos.add(new OrderUpdateDto(3, 6, 5));
@@ -97,13 +97,13 @@ class OrderManagementServiceImplTest {
     }
 
     /**
-     * Test the {@link OrderManagementService#placeOrder(int, PlaceOrderDto)} method to place an order.
+     * Test the {@link OrderManagementService#placeOrder(int, OrderAddressDto)} method to place an order.
      */
     @Test
     @Order(5)
-    void placeOrder() {
-        PlaceOrderDto placeOrderDto = new PlaceOrderDto("chand2ram@gmail.com", "9677963066", "Ganapathy");
-        assertEquals(1, orderManagementService.placeOrder(3, placeOrderDto));
+    void testPlaceOrder() {
+        OrderAddressDto orderAddressDto = new OrderAddressDto("chand2ram@gmail.com", "9677963066", "Ganapathy");
+        assertEquals(1, orderManagementService.placeOrder(3, orderAddressDto));
     }
 
     /**
@@ -111,26 +111,26 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(6)
-    void cancelOrder() {
+    void testCancelOrder() {
         assertEquals(2, orderManagementService.cancelOrder(1));
     }
 
     /**
-     * Test the {@link OrderManagementService#retrieveListOfActiveOrders(String)} method
+     * Test the {@link OrderManagementService#retrieveOrdersByStatus(String)} method
      * to retrieve a list of active orders with the given status.
      */
     @Test
     @Order(7)
-    void retrieveListOfActiveOrders() {
-        List<RetrieveOrderDto> retrieveOrderDtos = orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_PLACED.toString());
-        for (var activeOrderDto : retrieveOrderDtos) {
+    void testRetrieveListOfActiveOrders() {
+        List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.ORDER_PLACED.toString());
+        for (var activeOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = activeOrderDto.getOrder();
             System.out.println("Id : " + order.getId() +
                     ", User Id : " + order.getUserId() +
                     ", Total Cost : " + order.getTotalCost() +
                     ", Email : " + order.getEmail() +
                     ", Phone Number : " + order.getPhoneNumber() +
-                    ", Order Location : " + order.getOrderLocation() +
+                    ", Order Location : " + order.getLocation() +
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
@@ -143,25 +143,25 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(1, retrieveOrderDtos.size());
+        assertEquals(1, orderResponseDtos.size());
     }
 
     /**
-     * Test the {@link OrderManagementService#retrieveListOfActiveOrders(String)} method
+     * Test the {@link OrderManagementService#retrieveOrdersByStatus(String)} method
      * to retrieve a list of received orders with the given status.
      */
     @Test
     @Order(8)
-    void retrieveListOfReceivedOrders() {
-        List<RetrieveOrderDto> retrieveOrderDtos = orderManagementService.retrieveListOfActiveOrders(OrderStatus.RECEIVED_ORDER.toString());
-        for (var activeOrderDto : retrieveOrderDtos) {
+    void testRetrieveListOfReceivedOrders() {
+        List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.RECEIVED_ORDER.toString());
+        for (var activeOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = activeOrderDto.getOrder();
             System.out.println("Id : " + order.getId() +
                     ", User Id : " + order.getUserId() +
                     ", Total Cost : " + order.getTotalCost() +
                     ", Email : " + order.getEmail() +
                     ", Phone Number : " + order.getPhoneNumber() +
-                    ", Order Location : " + order.getOrderLocation() +
+                    ", Order Location : " + order.getLocation() +
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
@@ -174,55 +174,55 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(2, retrieveOrderDtos.size());
+        assertEquals(2, orderResponseDtos.size());
     }
 
     /**
-     * Test the {@link OrderManagementService#changeOrderStatus(int, String)} method
+     * Test the {@link OrderManagementService#updateOrderStatus(int, String)} method
      * to change the status of an order to "Waiting for Delivery".
      */
     @Test
     @Order(9)
-    void changeStatusToWaitingForDelivery() {
-        assertEquals(1, orderManagementService.changeOrderStatus(2, OrderStatus.ORDER_PREPARED_WAITING_FOR_DELIVERY.toString()));
+    void testUpdateStatusToWaitingForDelivery() {
+        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.ORDER_PREPARED_WAITING_FOR_DELIVERY.toString()));
     }
 
     /**
-     * Test the {@link OrderManagementService#changeOrderStatus(int, String)} method
+     * Test the {@link OrderManagementService#updateOrderStatus(int, String)} method
      * to change the status of an order to "Pending Delivery".
      */
     @Test
     @Order(10)
-    void changeStatusToPendingDelivery() {
-        assertEquals(1, orderManagementService.changeOrderStatus(2, OrderStatus.PENDING_DELIVERY.toString()));
+    void testUpdateStatusToPendingDelivery() {
+        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.PENDING_DELIVERY.toString()));
     }
 
     /**
-     * Test the {@link OrderManagementService#changeOrderStatus(int, String)} method
+     * Test the {@link OrderManagementService#updateOrderStatus(int, String)} method
      * to change the status of an order to "Order Delivered".
      */
     @Test
     @Order(11)
-    void changeStatusToOrderDelivered() {
-        assertEquals(1, orderManagementService.changeOrderStatus(2, OrderStatus.ORDER_DELIVERED.toString()));
+    void testUpdateStatusToOrderDelivered() {
+        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.ORDER_DELIVERED.toString()));
     }
 
     /**
-     * Test the {@link OrderManagementService#retrieveListOfActiveOrders(String)} method
+     * Test the {@link OrderManagementService#retrieveOrdersByStatus(String)} method
      * to retrieve a list of cancelled orders with the given status.
      */
     @Test
     @Order(12)
-    void retrieveListOfCancelledOrders() {
-        List<RetrieveOrderDto> retrieveOrderDtos = orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_CANCELLED.toString());
-        for (var retrieveOrderDto : retrieveOrderDtos) {
+    void testRetrieveListOfCancelledOrders() {
+        List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.ORDER_CANCELLED.toString());
+        for (var retrieveOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = retrieveOrderDto.getOrder();
             System.out.println("Id : " + order.getId() +
                     ", User Id : " + order.getUserId() +
                     ", Total Cost : " + order.getTotalCost() +
                     ", Email : " + order.getEmail() +
                     ", Phone Number : " + order.getPhoneNumber() +
-                    ", Order Location : " + order.getOrderLocation() +
+                    ", Order Location : " + order.getLocation() +
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
@@ -235,28 +235,28 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(1, retrieveOrderDtos.size());
+        assertEquals(1, orderResponseDtos.size());
     }
 
     /**
-     * Test the {@link OrderManagementService#displayOrderDetail(int, String)} method
+     * Test the {@link OrderManagementService#retrieveOrderByStatus(int, String)} method
      * to view details of a cancelled order.
      */
     @Test
     @Order(13)
-    void viewCancelledOrderDetail() {
-        RetrieveOrderDto retrieveOrderDto = orderManagementService.displayOrderDetail(1, OrderStatus.ORDER_CANCELLED.toString());
-        net.breezeware.order.entity.Order order = retrieveOrderDto.getOrder();
+    void testViewCancelledOrderDetail() {
+        OrderResponseDto orderResponseDto = orderManagementService.retrieveOrderByStatus(1, OrderStatus.ORDER_CANCELLED.toString());
+        net.breezeware.order.entity.Order order = orderResponseDto.getOrder();
         System.out.println("Id : " + order.getId() +
                 ", User Id : " + order.getUserId() +
                 ", Total Cost : " + order.getTotalCost() +
                 ", Email : " + order.getEmail() +
                 ", Phone Number : " + order.getPhoneNumber() +
-                ", Order Location : " + order.getOrderLocation() +
+                ", Order Location : " + order.getLocation() +
                 ", Order Status : " + order.getStatus() +
                 ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                 ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-        List<DisplayFoodItemDto> displayFoodItemDtos = retrieveOrderDto.getFoodItems();
+        List<DisplayFoodItemDto> displayFoodItemDtos = orderResponseDto.getFoodItems();
         for (var displayFoodItemDto : displayFoodItemDtos) {
             FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
             System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
@@ -264,25 +264,25 @@ class OrderManagementServiceImplTest {
                     ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                     ", Cost : " + foodItemDto.getFoodCost());
         }
-        assertNotEquals(null, retrieveOrderDto);
+        assertNotEquals(null, orderResponseDto);
     }
 
     /**
-     * Test the {@link OrderManagementService#retrieveListOfActiveOrders(String)} method
+     * Test the {@link OrderManagementService#retrieveOrdersByStatus(String)} method
      * to retrieve a list of completed orders with the given status.
      */
     @Test
     @Order(14)
     void retrieveListOfCompletedOrders() {
-        List<RetrieveOrderDto> retrieveOrderDtos = orderManagementService.retrieveListOfActiveOrders(OrderStatus.ORDER_DELIVERED.toString());
-        for (var retrieveOrderDto : retrieveOrderDtos) {
+        List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.ORDER_DELIVERED.toString());
+        for (var retrieveOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = retrieveOrderDto.getOrder();
             System.out.println("Id : " + order.getId() +
                     ", User Id : " + order.getUserId() +
                     ", Total Cost : " + order.getTotalCost() +
                     ", Email : " + order.getEmail() +
                     ", Phone Number : " + order.getPhoneNumber() +
-                    ", Order Location : " + order.getOrderLocation() +
+                    ", Order Location : " + order.getLocation() +
                     ", Order Status : " + order.getStatus() +
                     ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                     ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
@@ -295,28 +295,28 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(1, retrieveOrderDtos.size());
+        assertEquals(1, orderResponseDtos.size());
     }
 
     /**
-     * Test the {@link OrderManagementService#displayOrderDetail(int, String)} method
+     * Test the {@link OrderManagementService#retrieveOrderByStatus(int, String)} method
      * to view details of a completed order.
      */
     @Test
     @Order(15)
     void viewCompletedOrder() {
-        RetrieveOrderDto retrieveOrderDto = orderManagementService.displayOrderDetail(2, OrderStatus.ORDER_DELIVERED.toString());
-        net.breezeware.order.entity.Order order = retrieveOrderDto.getOrder();
+        OrderResponseDto orderResponseDto = orderManagementService.retrieveOrderByStatus(2, OrderStatus.ORDER_DELIVERED.toString());
+        net.breezeware.order.entity.Order order = orderResponseDto.getOrder();
         System.out.println("Id : " + order.getId() +
                 ", User Id : " + order.getUserId() +
                 ", Total Cost : " + order.getTotalCost() +
                 ", Email : " + order.getEmail() +
                 ", Phone Number : " + order.getPhoneNumber() +
-                ", Order Location : " + order.getOrderLocation() +
+                ", Order Location : " + order.getLocation() +
                 ", Order Status : " + order.getStatus() +
                 ", Ordered On : " + order.getOrderOn().substring(0, 10) + " " + order.getOrderOn().substring(11, 16) +
                 ", Delivery On : " + order.getDeliveryOn().substring(0, 10) + " " + order.getDeliveryOn().substring(11, 16));
-        List<DisplayFoodItemDto> displayFoodItemDtos = retrieveOrderDto.getFoodItems();
+        List<DisplayFoodItemDto> displayFoodItemDtos = orderResponseDto.getFoodItems();
         for (var displayFoodItemDto : displayFoodItemDtos) {
             FoodItemDto foodItemDto = displayFoodItemDto.getFoodItemDto();
             System.out.println("    Food Id : " + foodItemDto.getFoodItemId() +
@@ -324,6 +324,6 @@ class OrderManagementServiceImplTest {
                     ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                     ", Cost : " + foodItemDto.getFoodCost());
         }
-        assertNotEquals(null, retrieveOrderDto);
+        assertNotEquals(null, orderResponseDto);
     }
 }

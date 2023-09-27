@@ -1,8 +1,7 @@
 package net.breezeware.order.dao;
 
 import net.breezeware.DataBaseConnection;
-import net.breezeware.order.dto.RetrieveOrderDto;
-import net.breezeware.order.dto.DisplayFoodItemDto;
+import net.breezeware.order.dto.OrderResponseDto;
 import net.breezeware.order.dto.FoodItemDto;
 import net.breezeware.order.entity.Order;
 import net.breezeware.order.enumeration.OrderStatus;
@@ -28,10 +27,9 @@ public class OrderProcessAndDeliveryRepository {
      * @param status The status of the orders to be retrieved.
      * @return A list of RetrieveOrderDto objects representing the orders with the specified status.
      */
-    public List<RetrieveOrderDto> retrieveListOfOrdersByStatus(String status) {
+    public List<OrderResponseDto> retrieveListOfOrdersByStatus(String status) {
         List<Order> orders = new ArrayList<>();
-        List<RetrieveOrderDto> retrieveOrderDtos = new ArrayList<>();
-        DisplayFoodItemDto displayFoodItemDto = null;
+        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
@@ -59,19 +57,17 @@ public class OrderProcessAndDeliveryRepository {
                 }
                 resultSet1.close();
                 statement.close();
-                List<DisplayFoodItemDto> displayFoodItemDtos = new ArrayList<>();
                 for (var foodItemDto : foodItemDtos) {
                     Statement statement2 = connection.createStatement();
                     ResultSet resultSet2 = statement2
                             .executeQuery("SELECT * FROM food_item WHERE id=" + foodItemDto.getFoodItemId());
                     if (resultSet2.next()) {
-                        displayFoodItemDto = new DisplayFoodItemDto(foodItemDto, resultSet2.getString("name"));
+                        foodItemDto.setFoodItemName(resultSet2.getString("name"));
                     }
-                    displayFoodItemDtos.add(displayFoodItemDto);
                     resultSet2.close();
                     statement2.close();
                 }
-                retrieveOrderDtos.add(new RetrieveOrderDto(order, displayFoodItemDtos));
+                orderResponseDtos.add(new OrderResponseDto(order, foodItemDtos));
             }
             for (var order : orders) {
                 if (order.getStatus().equals(OrderStatus.ORDER_PLACED.toString())) {
@@ -86,7 +82,7 @@ public class OrderProcessAndDeliveryRepository {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return retrieveOrderDtos;
+        return orderResponseDtos;
     }
 
     /**
@@ -151,10 +147,9 @@ public class OrderProcessAndDeliveryRepository {
      * @param status The status of the order to be displayed.
      * @return A RetrieveOrderDto object representing the details of the order.
      */
-    public RetrieveOrderDto displayOrderDetail(int id, String status) {
+    public OrderResponseDto displayOrderDetail(int id, String status) {
         Order order = null;
-        RetrieveOrderDto retrieveOrderDto = null;
-        DisplayFoodItemDto displayFoodItemDto = null;
+        OrderResponseDto orderResponseDto = null;
         try {
             connection = DataBaseConnection.getConnection();
             assert connection != null;
@@ -184,22 +179,20 @@ public class OrderProcessAndDeliveryRepository {
             }
             resultSet1.close();
             statement.close();
-            List<DisplayFoodItemDto> displayFoodItemDtos = new ArrayList<>();
             for (var foodItemDto : foodItemDtos) {
                 Statement statement2 = connection.createStatement();
                 ResultSet resultSet2 = statement2
                         .executeQuery("SELECT * FROM food_item WHERE id=" + foodItemDto.getFoodItemId());
                 if (resultSet2.next()) {
-                    displayFoodItemDto = new DisplayFoodItemDto(foodItemDto, resultSet2.getString("name"));
+                   foodItemDto.setFoodItemName(resultSet2.getString("name"));
                 }
-                displayFoodItemDtos.add(displayFoodItemDto);
                 resultSet2.close();
                 statement2.close();
             }
-            retrieveOrderDto = new RetrieveOrderDto(order, displayFoodItemDtos);
+            orderResponseDto = new OrderResponseDto(order, foodItemDtos);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return retrieveOrderDto;
+        return orderResponseDto;
     }
 }

@@ -2,7 +2,7 @@ package net.breezeware.order.service.impl;
 
 import net.breezeware.food.entity.FoodItem;
 import net.breezeware.food.enumeration.Days;
-import net.breezeware.order.dao.OrderListRepository;
+import net.breezeware.order.dao.OrderItemRepository;
 import net.breezeware.order.dao.OrderProcessAndDeliveryRepository;
 import net.breezeware.order.dao.OrderRepository;
 import net.breezeware.order.dto.*;
@@ -20,7 +20,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
 
     // Instance variables
     OrderRepository orderRepository = new OrderRepository();
-    OrderListRepository orderListRepository = new OrderListRepository();
+    OrderItemRepository orderItemRepository = new OrderItemRepository();
     OrderProcessAndDeliveryRepository orderProcessAndDeliveryRepository = new OrderProcessAndDeliveryRepository();
 
     /**
@@ -46,10 +46,10 @@ public class OrderManagementServiceImpl implements OrderManagementService {
             return 0;
         } else {
             orderRepository.orderInCart(orderDto.getOrderId(), orderDto.getUserId());
-            List<FoodItemDto> foodItems = orderListRepository.getFoodItemCost(orderDto.getFoodItems());
-            orderListRepository.addFoodOrderItem(orderDto.getOrderId(), foodItems);
-            orderListRepository.updateOrderCost(orderDto.getOrderId());
-            return orderListRepository.updateFoodItemQuantity(foodItems);
+            List<FoodItemDto> foodItems = orderItemRepository.getFoodItemCost(orderDto.getFoodItems());
+            orderItemRepository.addFoodOrderItem(orderDto.getOrderId(), foodItems);
+            orderItemRepository.updateOrderCost(orderDto.getOrderId());
+            return orderItemRepository.updateFoodItemQuantity(foodItems);
         }
     }
 
@@ -61,7 +61,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      */
     public ViewOrderDto viewOrder(int orderId) {
         Order order = orderRepository.viewOrder(orderId);
-        List<FoodItem> foodItems = orderListRepository.viewOrderItems(orderId);
+        List<FoodItem> foodItems = orderItemRepository.viewOrderItems(orderId);
         return new ViewOrderDto(order, foodItems);
     }
 
@@ -74,11 +74,11 @@ public class OrderManagementServiceImpl implements OrderManagementService {
     public int updateOrderItem(List<OrderUpdateDto> orderUpdateDtos) {
         int recordsChanged = 0;
         for (var orderUpdateDto : orderUpdateDtos) {
-            int foodItemCost = orderListRepository.getFoodItemCost(orderUpdateDto);
+            int foodItemCost = orderItemRepository.getFoodItemCost(orderUpdateDto);
             assert foodItemCost == 1;
-            int recordChanged = orderListRepository.updateOrderItem(orderUpdateDto);
+            int recordChanged = orderItemRepository.updateOrderItem(orderUpdateDto);
             assert recordChanged == 1;
-            int updateOrderCost = orderListRepository.updateOrderCost(orderUpdateDto.getOrderId());
+            int updateOrderCost = orderItemRepository.updateOrderCost(orderUpdateDto.getOrderId());
             assert updateOrderCost == 1;
             recordsChanged++;
         }
@@ -89,12 +89,12 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      * Places an order with user details.
      *
      * @param orderId       The ID of the order to place.
-     * @param placeOrderDto User details including email, phone number, and order location.
+     * @param orderAddressDto User details including email, phone number, and order location.
      * @return 1 if the order is successfully placed, 0 otherwise.
      */
-    public int placeOrder(int orderId, PlaceOrderDto placeOrderDto) {
-        if (validateEmail(placeOrderDto.getEmail()) && validatePhoneNumber(placeOrderDto.getPhoneNumber())) {
-            return orderRepository.placeOrder(orderId, placeOrderDto);
+    public int placeOrder(int orderId, OrderAddressDto orderAddressDto) {
+        if (validateEmail(orderAddressDto.getEmail()) && validatePhoneNumber(orderAddressDto.getPhoneNumber())) {
+            return orderRepository.placeOrder(orderId, orderAddressDto);
         } else {
             System.out.println("Your Email or Phone Number is Not in correct Format");
             return 0;
@@ -137,9 +137,9 @@ public class OrderManagementServiceImpl implements OrderManagementService {
     public int cancelOrder(int orderId) {
         int recordChanged = orderRepository.cancelOrder(orderId);
         assert recordChanged == 1;
-        List<OrderCancelDto> orderCancelDtos = orderListRepository.cancelFoodItemList(orderId);
+        List<OrderCancelDto> orderCancelDtos = orderItemRepository.cancelFoodItemList(orderId);
         assert !orderCancelDtos.isEmpty();
-        return orderListRepository.changeFoodItemQuantity(orderCancelDtos);
+        return orderItemRepository.changeFoodItemQuantity(orderCancelDtos);
     }
 
     /**
@@ -148,7 +148,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      * @param status The status of orders to retrieve.
      * @return A list of RetrieveOrderDto objects representing active orders.
      */
-    public List<RetrieveOrderDto> retrieveListOfActiveOrders(String status) {
+    public List<OrderResponseDto> retrieveOrdersByStatus(String status) {
         return orderProcessAndDeliveryRepository.retrieveListOfOrdersByStatus(status);
     }
 
@@ -159,18 +159,14 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      * @param status The new status for the order.
      * @return 1 if the status change is successful, 0 otherwise.
      */
-    public int changeOrderStatus(int id, String status) {
+    public int updateOrderStatus(int id, String status) {
         return orderProcessAndDeliveryRepository.changeOrderStatus(id, status);
     }
 
     /**
-     * Displays the detailed information of an order.
-     *
-     * @param id     The ID of the order to display.
-     * @param status The status of the order to display.
-     * @return A RetrieveOrderDto containing detailed order information.
+     {@inheritDoc}
      */
-    public RetrieveOrderDto displayOrderDetail(int id, String status) {
+    public OrderResponseDto retrieveOrderByStatus(int id, String status) {
         return orderProcessAndDeliveryRepository.displayOrderDetail(id, status);
     }
 }

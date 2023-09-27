@@ -6,7 +6,7 @@ package net.breezeware.user.entity;
 public class User {
     private int id;          // Unique identifier for the user.
     private String name;     // Full name of the user.
-    private String userName; // User's username.
+    private String username; // User's username.
     private String password; // User's password.
     private String role;     // User's role.
 
@@ -15,14 +15,14 @@ public class User {
      *
      * @param id       The unique identifier for the user.
      * @param name     The full name of the user.
-     * @param userName The username chosen by the user.
+     * @param username The username chosen by the user.
      * @param password The user's password.
      * @param role     The role or permission level of the user.
      */
-    public User(int id, String name, String userName, String password, String role) {
+    public User(int id, String name, String username, String password, String role) {
         this.id = id;
         this.name = name;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
@@ -68,17 +68,17 @@ public class User {
      *
      * @return The user's username.
      */
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     /**
      * Set the username of the user.
      *
-     * @param userName The user's username.
+     * @param username The user's username.
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
