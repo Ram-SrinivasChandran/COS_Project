@@ -18,7 +18,7 @@ class UserServiceImplTest {
      */
     @Test
     void addUser(){
-        User user=new User(1,"Seenu","ram_06","breeze123","Admin");
+        User user=new User(2,"Ram","seenu_06","breeze123","Customer");
         assertEquals(1,userService.addUser(user));
     }
     /**
@@ -31,5 +31,6 @@ class UserServiceImplTest {
         // Call the 'loginUser' method with username and password
         // and assert that it returns the expected username 'Seenu'
         assertEquals("Seenu",userService.loginUser("ram_06","breeze123"));
+        System.out.println("Login Successfully");
     }
 }

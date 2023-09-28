@@ -40,7 +40,7 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      * @param orderDto The order details including user ID and cart items.
      * @return The number of items in the order.
      */
-    public int orderInCart(OrderDto orderDto) {
+    public int addOrderItemInCart(OrderDto orderDto) {
         boolean userCheck = orderRepository.userCheck(orderDto.getUserId());
         if (!userCheck) {
             System.out.println("You didn't have Access to the Order Section.");

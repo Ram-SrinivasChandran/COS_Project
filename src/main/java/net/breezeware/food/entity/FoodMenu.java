@@ -37,6 +37,10 @@ public class FoodMenu {
         this.availabilityOn = availabilityOn;
     }
 
+    public FoodMenu(int id) {
+        this.id = id;
+    }
+
     /**
      * Get the unique identifier for the food menu.
      *

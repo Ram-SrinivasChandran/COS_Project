@@ -25,7 +25,7 @@ public interface OrderManagementService {
      * @param orderDto The OrderDto containing order details.
      * @return The number of food items added to the cart.
      */
-    int orderInCart(OrderDto orderDto);
+    int addOrderItemInCart(OrderDto orderDto);
 
     /**
      * Retrieve details of a specific order, including the associated food items.

@@ -211,11 +211,9 @@ public class OrderRepository {
             preparedStatement.setString(1, String.valueOf(OrderStatus.ORDER_CANCELLED));
             recordsChanged = preparedStatement.executeUpdate();
             preparedStatement.close();
+            connection.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
-            assert connection != null;
-            connection.close();
         }
         return recordsChanged;
     }

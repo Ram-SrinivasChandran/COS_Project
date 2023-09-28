@@ -51,15 +51,15 @@ class OrderManagementServiceImplTest {
     }
 
     /**
-     * Test the {@link OrderManagementService#orderInCart(OrderDto)} method to add items to the cart.
+     * Test the {@link OrderManagementService#addOrderItemInCart(OrderDto)} method to add items to the cart.
      */
     @Test
     @Order(2)
-    void testOrderInCart() {
+    void testAddOrderItemInCart() {
         List<FoodItemDto> foodItems = new ArrayList<>();
-        foodItems.add(new FoodItemDto(5, 5));
-        foodItems.add(new FoodItemDto(6, 5));
-        assertEquals(foodItems.size(), orderManagementService.orderInCart(new OrderDto(2, 3, foodItems)));
+        foodItems.add(new FoodItemDto(1, 5));
+        foodItems.add(new FoodItemDto(2, 5));
+        assertEquals(foodItems.size(), orderManagementService.addOrderItemInCart(new OrderDto(2, 1, foodItems)));
     }
 
     /**
@@ -68,7 +68,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(3)
     void testViewOrder() {
-        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(1);
+        ViewOrderDto viewOrderDto = orderManagementService.viewOrder(3);
         net.breezeware.order.entity.Order order = viewOrderDto.getOrder();
         System.out.println("Id : " + order.getId() +
                 ", User Id : " + order.getUserId() +
@@ -92,8 +92,8 @@ class OrderManagementServiceImplTest {
     @Order(4)
     void testUpdateOrderItem() {
         List<OrderUpdateDto> orderUpdateDtos = new ArrayList<>();
-        orderUpdateDtos.add(new OrderUpdateDto(3, 5, 10));
-        orderUpdateDtos.add(new OrderUpdateDto(3, 6, 5));
+        orderUpdateDtos.add(new OrderUpdateDto(1, 1, 50));
+        orderUpdateDtos.add(new OrderUpdateDto(1, 2, 5));
         assertEquals(orderUpdateDtos.size(), orderManagementService.updateOrderItem(orderUpdateDtos));
     }
 
@@ -104,7 +104,7 @@ class OrderManagementServiceImplTest {
     @Order(5)
     void testPlaceOrder() {
         OrderAddressDto orderAddressDto = new OrderAddressDto("chand2ram@gmail.com", "9677963066", "Ganapathy");
-        assertEquals(1, orderManagementService.placeOrder(3, orderAddressDto));
+        assertEquals(1, orderManagementService.placeOrder(1, orderAddressDto));
     }
 
     /**
@@ -122,7 +122,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(7)
-    void testRetrieveListOfActiveOrders() {
+    void testRetrieveActiveOrders() {
         List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.ORDER_PLACED.toString());
         for (var activeOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = activeOrderDto.getOrder();
@@ -143,7 +143,8 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(2, orderResponseDtos.size());
+        assertEquals(OrderStatus.ORDER_PLACED.toString(),orderResponseDtos.get(0).getOrder().getStatus());
+        assertEquals(1, orderResponseDtos.size());
     }
 
     /**
@@ -152,7 +153,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(8)
-    void testRetrieveListOfReceivedOrders() {
+    void testRetrieveReceivedOrders() {
         List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.RECEIVED_ORDER.toString());
         for (var activeOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = activeOrderDto.getOrder();
@@ -173,7 +174,8 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
-        assertEquals(2, orderResponseDtos.size());
+        assertEquals(OrderStatus.RECEIVED_ORDER.toString(),orderResponseDtos.get(0).getOrder().getStatus());
+        assertEquals(1, orderResponseDtos.size());
     }
 
     /**
@@ -183,7 +185,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(9)
     void testUpdateStatusToWaitingForDelivery() {
-        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.ORDER_PREPARED_WAITING_FOR_DELIVERY.toString()));
+        assertEquals(1, orderManagementService.updateOrderStatus(1, OrderStatus.ORDER_PREPARED_WAITING_FOR_DELIVERY.toString()));
     }
 
     /**
@@ -193,7 +195,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(10)
     void testUpdateStatusToPendingDelivery() {
-        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.PENDING_DELIVERY.toString()));
+        assertEquals(1, orderManagementService.updateOrderStatus(1, OrderStatus.PENDING_DELIVERY.toString()));
     }
 
     /**
@@ -203,7 +205,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(11)
     void testUpdateStatusToOrderDelivered() {
-        assertEquals(1, orderManagementService.updateOrderStatus(2, OrderStatus.ORDER_DELIVERED.toString()));
+        assertEquals(1, orderManagementService.updateOrderStatus(1, OrderStatus.ORDER_DELIVERED.toString()));
     }
 
     /**
@@ -212,7 +214,7 @@ class OrderManagementServiceImplTest {
      */
     @Test
     @Order(12)
-    void testRetrieveListOfCancelledOrders() {
+    void testRetrieveCancelledOrders() {
         List<OrderResponseDto> orderResponseDtos = orderManagementService.retrieveOrdersByStatus(OrderStatus.ORDER_CANCELLED.toString());
         for (var retrieveOrderDto : orderResponseDtos) {
             net.breezeware.order.entity.Order order = retrieveOrderDto.getOrder();
@@ -233,6 +235,7 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
+        assertEquals(OrderStatus.ORDER_CANCELLED.toString(),orderResponseDtos.get(0).getOrder().getStatus());
         assertEquals(1, orderResponseDtos.size());
     }
 
@@ -261,6 +264,7 @@ class OrderManagementServiceImplTest {
                     ", Food Quantity : " + foodItemDto.getFoodItemQuantity() +
                     ", Cost : " + foodItemDto.getFoodCost());
         }
+        assertEquals(OrderStatus.ORDER_CANCELLED.toString(),order.getStatus());
         assertNotEquals(null, orderResponseDto);
     }
 
@@ -291,6 +295,7 @@ class OrderManagementServiceImplTest {
                         ", Cost : " + foodItemDto.getFoodCost());
             }
         }
+        assertEquals(OrderStatus.ORDER_DELIVERED.toString(),orderResponseDtos.get(0).getOrder().getStatus());
         assertEquals(1, orderResponseDtos.size());
     }
 
@@ -301,7 +306,7 @@ class OrderManagementServiceImplTest {
     @Test
     @Order(15)
     void viewCompletedOrder() {
-        OrderResponseDto orderResponseDto = orderManagementService.retrieveOrderByStatus(2, OrderStatus.ORDER_DELIVERED.toString());
+        OrderResponseDto orderResponseDto = orderManagementService.retrieveOrderByStatus(1, OrderStatus.ORDER_DELIVERED.toString());
         net.breezeware.order.entity.Order order = orderResponseDto.getOrder();
         System.out.println("Id : " + order.getId() +
                 ", User Id : " + order.getUserId() +
@@ -320,5 +325,6 @@ class OrderManagementServiceImplTest {
                     ", Cost : " + foodItemDto.getFoodCost());
         }
         assertNotEquals(null, orderResponseDto);
+        assertEquals(OrderStatus.ORDER_DELIVERED.toString(),order.getStatus());
     }
 }

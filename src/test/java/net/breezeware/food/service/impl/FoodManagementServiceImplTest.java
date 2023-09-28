@@ -50,7 +50,7 @@ class FoodManagementServiceImplTest {
                     ", Cost: " + foodItem.getCost() +
                     ", Total Quantity: " + foodItem.getQuantity());
         }
-        assertEquals(21,foodItems.size());
+        assertEquals(1,foodItems.size());
     }
     /**
      * Test the 'updateFoodItem' method.
@@ -75,28 +75,26 @@ class FoodManagementServiceImplTest {
     @Test
     @Order(6)
     void testAddFoodMenu(){
-        // Test adding a breakfast menu
-//        List<FoodItem> foodItems=new ArrayList<>();
-//        foodItems.add(new FoodItem("Idly",10,20));
-//        foodItems.add(new FoodItem("Dosa",20,20));
-//        foodItems.add(new FoodItem("Parotta",25,30));
-//        String days= String.valueOf(Days.Sunday);
-//        FoodMenu foodMenu=new FoodMenu(7,"Breakfast","Veg",days);
-//        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu,foodItems)));
-        // Test adding a lunch menu
-//        List<FoodItem> foodItems1=new ArrayList<>();
-//        foodItems1.add(new FoodItem("Parotta",10,20));
-//        foodItems1.add(new FoodItem("Briyani",50,30));
-//        String days= String.valueOf(Days.Sunday);
-//        FoodMenu foodMenu1=new FoodMenu(14,"Lunch","N-Veg",days);
-//        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu1,foodItems1)));
-//        // Test adding a dinner menu
-        List<FoodItem> foodItems2=new ArrayList<>();
-        foodItems2.add(new FoodItem("Briyani",50,20));
-        foodItems2.add(new FoodItem("Parotta",10,30));
-        String days= String.valueOf(Days.SUNDAY);
-        FoodMenu foodMenu2=new FoodMenu(21,"Dinner","N-Veg",days);
-        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu2,foodItems2)));
+//         Test adding a breakfast menu
+        List<FoodItem> breakfast=new ArrayList<>();
+        breakfast.add(new FoodItem("Idly",10,20));
+        breakfast.add(new FoodItem("Dosa",20,20));
+        breakfast.add(new FoodItem("Pongal",25,30));
+        String days= String.valueOf(Days.TUESDAY);
+        FoodMenu foodMenu=new FoodMenu(4,"Breakfast","Veg",days);
+        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu,breakfast)));
+//         Test adding a lunch menu
+        List<FoodItem> lunch=new ArrayList<>();
+        lunch.add(new FoodItem("Parotta",10,20));
+        lunch.add(new FoodItem("Rice",50,30));
+        FoodMenu foodMenu1=new FoodMenu(5,"Lunch","Veg",days);
+        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu1,lunch)));
+//         Test adding a dinner menu
+        List<FoodItem> dinner=new ArrayList<>();
+        dinner.add(new FoodItem("Egg-Rice",50,20));
+        dinner.add(new FoodItem("Parotta",10,30));
+        FoodMenu foodMenu2=new FoodMenu(6,"Dinner","N-Veg",days);
+        assertEquals(days,foodManagementService.addFoodMenu(new FoodMenuDto(foodMenu2,dinner)));
     }
     /**
      * Test the 'retrieveFoodMenu' method.
@@ -119,7 +117,7 @@ class FoodManagementServiceImplTest {
                         ", Quantity : " + foodItem.getQuantity());
             }
         }
-        assertEquals(21,foodMenuDtoList.size());
+        assertEquals(6,foodMenuDtoList.size());
     }
     /**
      * Test the 'updateMenu' method.
@@ -130,7 +128,8 @@ class FoodManagementServiceImplTest {
         List<FoodItem> foodItems=new ArrayList<>();
         foodItems.add(new FoodItem(1,"Idly",20,200));
         foodItems.add(new FoodItem(2,"Dosa",30,100));
-        FoodMenu foodMenu=new FoodMenu(2,"Breakfast","Veg","Monday");
+        String days= String.valueOf(Days.MONDAY);
+        FoodMenu foodMenu=new FoodMenu(1);
         FoodMenuDto foodMenuDto=new FoodMenuDto(foodMenu,foodItems);
         assertEquals(1,foodManagementService.updateFoodMenu(foodMenuDto));
     }

@@ -187,6 +187,7 @@ public class OrderItemRepository {
      */
     public int getFoodItemCost(OrderUpdateDto orderUpdateDto) {
         int quantity = 0;
+        boolean isChanged=true;
         int recordChanged = 0;
         try {
             connection = DataBaseConnection.getConnection();
@@ -209,6 +210,8 @@ public class OrderItemRepository {
                 if (orderUpdateDto.getOldQuantity() < orderUpdateDto.getNewQuantity()) {
                     if (orderUpdateDto.getNewQuantity() - orderUpdateDto.getOldQuantity() > resultSet1.getInt("quantity")) {
                         System.out.println(resultSet1.getString("name") + " is less than Your Required Quantity.");
+                        quantity=resultSet1.getInt("quantity");
+                        isChanged=false;
                     } else {
                         quantity = resultSet1.getInt("quantity") - extraQuantity;
                     }
@@ -224,6 +227,9 @@ public class OrderItemRepository {
             recordChanged = preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
+            if(!isChanged){
+                recordChanged=0;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

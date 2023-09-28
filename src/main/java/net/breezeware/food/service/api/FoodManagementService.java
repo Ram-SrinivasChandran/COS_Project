@@ -75,7 +75,7 @@ public interface FoodManagementService {
     /**
      * Delete a food menu by its details.
      *
-     * @param foodMenu The food menu object to delete.
+     * @param foodMenuId The food menu object to delete.
      * @return true if the food menu is deleted, false otherwise.
      */
     boolean deleteFoodMenu(int foodMenuId);
